@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ShadowQuant Dynamics – ITMS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   ShadowQuant ITMS – Design System
+   Theme: Obsidian Dark + Royal Blue + Amber Accent
+═══════════════════════════════════════════════════════════ */
+:root{
+  --bg-void:     #f4f6fc;
+  --bg-base:     #ffffff;
+  --bg-surface:  #edf0f8;
+  --bg-card:     #ffffff;
+  --bg-elevated: #e4e8f3;
+  --bg-hover:    #edf0f8;
+
+  --blue-core:   #1a6cf6;
+  --blue-bright: #1a6cf6;
+  --blue-glow:   #1a6cf620;
+  --blue-dim:    #1a4a9a;
+
+  --amber:       #f5a623;
+  --amber-dim:   #f5a62333;
+  --green:       #22c55e;
+  --green-dim:   #22c55e22;
+  --red:         #ef4444;
+  --red-dim:     #ef444422;
+  --purple:      #a855f7;
+  --purple-dim:  #a855f722;
+  --cyan:        #06b6d4;
+
+  --text-primary: #0c1220;
+  --text-second:  #5a6684;
+  --text-muted:   #8ba0b5;
+  --text-inverse: #ffffff;
+
+  --border:      #dbe0f0;
+  --border-glow: #1a6cf640;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+
+  --shadow-sm:  0 2px 8px #00000040;
+  --shadow-md:  0 8px 24px #00000060;
+  --shadow-lg:  0 16px 48px #00000080;
+  --shadow-blue: 0 0 32px #1a6cf628;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;scroll-behavior:smooth}
+body{
+  background:var(--bg-void);
+  color:var(--text-primary);
+  font-family:var(--font-body);
+  min-height:100vh;
+  overflow-x:hidden;
+  line-height:1.6;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg-base)}
+::-webkit-scrollbar-thumb{background:var(--blue-dim);border-radius:99px}
+
+/* ── Typography ────────────────────────────────────────── */
+h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:700;line-height:1.2}
+.syne{font-family:var(--font-display)}
+
+/* ── Layout ────────────────────────────────────────────── */
+.shell{display:flex;min-height:100vh}
+
+/* ══════════════════════════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════════════════════════ */
+.sidebar{
+  width:240px;min-width:240px;
+  background:var(--bg-base);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;height:100vh;
+  z-index:100;
+  transition:transform .3s ease;
+}
+.sidebar-logo{
+  padding:24px 20px 20px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.logo-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,var(--blue-core),var(--blue-bright));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-weight:800;font-size:14px;color:#fff;
+  box-shadow:0 4px 16px var(--blue-glow);
+  flex-shrink:0;
+}
+.logo-text{font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--text-primary);line-height:1.2}
+.logo-text span{color:var(--blue-bright);display:block;font-size:10px;font-weight:400;letter-spacing:.08em;text-transform:uppercase}
+
+.sidebar-section{padding:16px 12px 4px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);font-weight:600}
+.nav-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 16px;margin:2px 8px;
+  border-radius:var(--radius-sm);
+  color:var(--text-second);font-size:13.5px;font-weight:500;
+  cursor:pointer;transition:all .18s ease;
+  text-decoration:none;position:relative;
+}
+.nav-item:hover{background:var(--bg-hover);color:var(--text-primary)}
+.nav-item.active{
+  background:var(--blue-glow);color:var(--blue-bright);
+  border:1px solid var(--border-glow);
+}
+.nav-item.active::before{
+  content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:3px;height:60%;background:var(--blue-bright);border-radius:0 3px 3px 0;
+}
+.nav-icon{width:18px;height:18px;opacity:.8;flex-shrink:0}
+.nav-badge{
+  margin-left:auto;
+  background:var(--red);color:#fff;
+  font-size:10px;font-weight:700;
+  padding:2px 6px;border-radius:99px;min-width:18px;text-align:center;
+}
+
+.sidebar-footer{
+  margin-top:auto;padding:16px;border-top:1px solid var(--border);
+}
+.user-chip{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:var(--radius-sm);
+  background:var(--bg-surface);cursor:pointer;
+  transition:background .18s;
+}
+.user-chip:hover{background:var(--bg-elevated)}
+.avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue-core),var(--purple));
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:12px;color:#fff;flex-shrink:0;
+}
+.user-info{flex:1;min-width:0}
+.user-name{font-size:12.5px;font-weight:600;truncate;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-role{font-size:10.5px;color:var(--text-muted);text-transform:capitalize}
+
+/* ══════════════════════════════════════════════════════════
+   MAIN CONTENT
+══════════════════════════════════════════════════════════ */
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column}
+
+.topbar{
+  position:sticky;top:0;z-index:90;
+  background:var(--bg-void);
+  border-bottom:1px solid var(--border);
+  padding:0 28px;
+  height:60px;display:flex;align-items:center;gap:16px;
+  backdrop-filter:blur(12px);
+}
+.topbar-title{font-family:var(--font-display);font-size:16px;font-weight:700;flex:1}
+.topbar-search{
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg-surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-md);
+  padding:7px 14px;width:240px;
+  transition:border-color .18s;
+}
+.topbar-search:focus-within{border-color:var(--blue-core)}
+.topbar-search input{
+  background:transparent;border:none;outline:none;
+  color:var(--text-primary);font-family:var(--font-body);font-size:13px;
+  flex:1;
+}
+.topbar-search input::placeholder{color:var(--text-muted)}
+.search-icon{color:var(--text-muted);flex-shrink:0}
+
+.icon-btn{
+  width:38px;height:38px;border-radius:var(--radius-sm);
+  background:var(--bg-surface);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .18s;color:var(--text-second);
+  position:relative;
+}
+.icon-btn:hover{background:var(--bg-elevated);color:var(--text-primary);border-color:var(--border-glow)}
+.notif-dot{
+  position:absolute;top:6px;right:6px;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--red);border:2px solid var(--bg-void);
+}
+
+.content{padding:28px;flex:1}
+
+/* ══════════════════════════════════════════════════════════
+   CARDS & GLASS
+══════════════════════════════════════════════════════════ */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:24px;
+  transition:border-color .2s;
+}
+.card:hover{border-color:var(--border-glow)}
+.card-sm{padding:16px}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.card-title{font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--text-primary)}
+.card-sub{font-size:12px;color:var(--text-muted);margin-top:3px}
+
+.glass{
+  background:rgba(14,20,40,.7);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(30,40,64,.8);
+}
+
+/* ══════════════════════════════════════════════════════════
+   STAT CARDS
+══════════════════════════════════════════════════════════ */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:20px;
+  position:relative;overflow:hidden;
+  transition:transform .2s, border-color .2s;
+}
+.stat-card::before{
+  content:'';position:absolute;
+  top:-40px;right:-40px;
+  width:100px;height:100px;border-radius:50%;
+  opacity:.07;
+}
+.stat-card.blue::before{background:var(--blue-bright)}
+.stat-card.amber::before{background:var(--amber)}
+.stat-card.green::before{background:var(--green)}
+.stat-card.purple::before{background:var(--purple)}
+.stat-card:hover{transform:translateY(-2px);border-color:var(--border-glow)}
+
+.stat-icon{
+  width:40px;height:40px;border-radius:var(--radius-sm);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:14px;
+}
+.stat-icon.blue{background:var(--blue-glow);color:var(--blue-bright)}
+.stat-icon.amber{background:var(--amber-dim);color:var(--amber)}
+.stat-icon.green{background:var(--green-dim);color:var(--green)}
+.stat-icon.purple{background:var(--purple-dim);color:var(--purple)}
+
+.stat-value{font-family:var(--font-display);font-size:28px;font-weight:800;line-height:1;margin-bottom:6px}
+.stat-label{font-size:12px;color:var(--text-muted)}
+.stat-delta{
+  font-size:11.5px;font-weight:600;margin-top:8px;
+  display:flex;align-items:center;gap:4px;
+}
+.stat-delta.up{color:var(--green)}
+.stat-delta.down{color:var(--red)}
+
+/* ══════════════════════════════════════════════════════════
+   KANBAN PIPELINE
+══════════════════════════════════════════════════════════ */
+.pipeline-wrap{overflow-x:auto;padding-bottom:8px}
+.pipeline{display:flex;gap:16px;min-width:max-content}
+.pipeline-col{
+  width:230px;
+  background:var(--bg-surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+}
+.col-header{
+  padding:14px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.col-name{font-family:var(--font-display);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.col-count{
+  font-size:11px;font-weight:700;
+  background:var(--bg-card);
+  color:var(--text-muted);
+  padding:2px 8px;border-radius:99px;
+}
+.col-cards{padding:10px;display:flex;flex-direction:column;gap:8px;min-height:120px}
+.kcard{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-md);
+  padding:14px;cursor:pointer;
+  transition:all .18s;
+}
+.kcard:hover{border-color:var(--border-glow);background:var(--bg-elevated);transform:translateY(-1px)}
+.kcard-company{font-size:11px;color:var(--text-muted);margin-bottom:4px}
+.kcard-title{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:8px;line-height:1.3}
+.kcard-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+/* ── Status Pills ── */
+.pill{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:99px;
+  font-size:11px;font-weight:600;
+}
+.pill-applied{background:var(--blue-glow);color:var(--blue-bright);border:1px solid var(--border-glow)}
+.pill-shortlisted{background:#f59e0b22;color:#f59e0b;border:1px solid #f59e0b33}
+.pill-interview{background:#8b5cf622;color:#8b5cf6;border:1px solid #8b5cf633}
+.pill-hired{background:var(--green-dim);color:var(--green);border:1px solid #22c55e33}
+.pill-rejected{background:var(--red-dim);color:var(--red);border:1px solid #ef444433}
+.pill-active{background:var(--green-dim);color:var(--green);border:1px solid #22c55e33}
+.pill-pending{background:var(--amber-dim);color:var(--amber);border:1px solid #f5a62333}
+.pill-draft{background:var(--bg-elevated);color:var(--text-muted);border:1px solid var(--border)}
+
+/* ══════════════════════════════════════════════════════════
+   TABLE
+══════════════════════════════════════════════════════════ */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+thead{border-bottom:1px solid var(--border)}
+th{
+  padding:10px 14px;text-align:left;
+  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-muted);white-space:nowrap;
+}
+td{
+  padding:13px 14px;
+  border-bottom:1px solid var(--border);
+  font-size:13.5px;color:var(--text-primary);
+  vertical-align:middle;
+}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg-hover)}
+
+/* ══════════════════════════════════════════════════════════
+   BUTTONS
+══════════════════════════════════════════════════════════ */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 18px;border-radius:var(--radius-sm);
+  font-family:var(--font-body);font-size:13px;font-weight:600;
+  cursor:pointer;transition:all .18s;border:none;text-decoration:none;
+}
+.btn-primary{
+  background:var(--blue-core);color:#fff;
+  box-shadow:0 4px 16px var(--blue-glow);
+}
+.btn-primary:hover{background:var(--blue-bright);transform:translateY(-1px);box-shadow:0 6px 24px #1a6cf640}
+.btn-secondary{background:var(--bg-elevated);color:var(--text-primary);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--bg-hover);border-color:var(--border-glow)}
+.btn-ghost{background:transparent;color:var(--text-second);border:1px solid transparent}
+.btn-ghost:hover{background:var(--bg-hover);color:var(--text-primary)}
+.btn-danger{background:var(--red-dim);color:var(--red);border:1px solid #ef444433}
+.btn-danger:hover{background:#ef44441a;border-color:var(--red)}
+.btn-sm{padding:6px 12px;font-size:12px}
+.btn-xs{padding:4px 9px;font-size:11px}
+.btn-icon{width:34px;height:34px;padding:0;justify-content:center}
+
+/* ══════════════════════════════════════════════════════════
+   FORMS
+══════════════════════════════════════════════════════════ */
+.form-group{margin-bottom:18px}
+label{display:block;font-size:12.5px;font-weight:600;color:var(--text-second);margin-bottom:7px}
+input,select,textarea{
+  width:100%;
+  background:var(--bg-surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:10px 14px;
+  color:var(--text-primary);
+  font-family:var(--font-body);font-size:13.5px;
+  outline:none;transition:border-color .18s;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--blue-core)}
+input::placeholder,textarea::placeholder{color:var(--text-muted)}
+textarea{resize:vertical;min-height:90px}
+select option{background:var(--bg-card)}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-row.three{grid-template-columns:1fr 1fr 1fr}
+
+/* ══════════════════════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════════════════════ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(3,4,10,.85);
+  backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-xl);
+  width:100%;max-width:560px;
+  max-height:90vh;overflow-y:auto;
+  padding:28px;
+  transform:translateY(12px);transition:transform .25s ease;
+  box-shadow:var(--shadow-lg);
+}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px}
+.modal-title{font-family:var(--font-display);font-size:18px;font-weight:700}
+.modal-close{
+  width:32px;height:32px;border-radius:var(--radius-sm);
+  background:var(--bg-surface);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  color:var(--text-muted);transition:all .18s;flex-shrink:0;
+}
+.modal-close:hover{background:var(--red-dim);color:var(--red);border-color:#ef444433}
+
+/* ══════════════════════════════════════════════════════════
+   TABS
+══════════════════════════════════════════════════════════ */
+.tabs{display:flex;gap:4px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:4px;width:fit-content;margin-bottom:24px}
+.tab{
+  padding:7px 16px;border-radius:var(--radius-sm);
+  font-size:13px;font-weight:600;cursor:pointer;
+  color:var(--text-muted);transition:all .18s;
+}
+.tab.active{background:var(--bg-card);color:var(--text-primary);box-shadow:var(--shadow-sm)}
+
+/* ══════════════════════════════════════════════════════════
+   INTERNSHIP CARD (listing)
+══════════════════════════════════════════════════════════ */
+.job-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:20px;
+  cursor:pointer;transition:all .2s;
+  display:flex;flex-direction:column;gap:14px;
+}
+.job-card:hover{border-color:var(--border-glow);transform:translateY(-2px);box-shadow:var(--shadow-blue)}
+.job-card.featured{border-color:var(--blue-dim);background:linear-gradient(135deg,var(--bg-card),#0e1c3c)}
+.job-card.featured::before{
+  content:'★ FEATURED';
+  font-size:9px;font-weight:700;letter-spacing:.1em;
+  color:var(--amber);background:var(--amber-dim);
+  padding:3px 8px;border-radius:99px;border:1px solid #f5a62333;
+  display:inline-block;margin-bottom:4px;
+}
+.job-header{display:flex;align-items:flex-start;gap:14px}
+.company-logo{
+  width:44px;height:44px;border-radius:var(--radius-sm);
+  background:linear-gradient(135deg,var(--bg-elevated),var(--bg-hover));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-weight:800;font-size:14px;color:var(--blue-bright);
+  border:1px solid var(--border);flex-shrink:0;
+}
+.job-info{flex:1}
+.job-company{font-size:12px;color:var(--text-muted);margin-bottom:3px}
+.job-title{font-family:var(--font-display);font-size:15px;font-weight:700;margin-bottom:0}
+.job-meta{display:flex;flex-wrap:wrap;gap:8px}
+.meta-tag{
+  display:flex;align-items:center;gap:5px;
+  font-size:12px;color:var(--text-second);
+}
+.job-skills{display:flex;flex-wrap:wrap;gap:6px}
+.skill-tag{
+  background:var(--bg-surface);border:1px solid var(--border);
+  color:var(--text-second);font-size:11.5px;
+  padding:3px 10px;border-radius:99px;
+  transition:all .15s;
+}
+.skill-tag:hover{border-color:var(--blue-dim);color:var(--blue-bright)}
+.job-footer{display:flex;align-items:center;justify-content:space-between}
+.stipend{font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--green)}
+.stipend small{font-size:11px;color:var(--text-muted);font-weight:400;margin-left:2px}
+
+/* ══════════════════════════════════════════════════════════
+   PROGRESS / SCORES
+══════════════════════════════════════════════════════════ */
+.progress-bar{height:5px;background:var(--border);border-radius:99px;overflow:hidden;margin-top:6px}
+.progress-fill{height:100%;border-radius:99px;transition:width .6s ease}
+.progress-fill.blue{background:linear-gradient(90deg,var(--blue-dim),var(--blue-bright))}
+.progress-fill.green{background:linear-gradient(90deg,#16a34a,var(--green))}
+.progress-fill.amber{background:linear-gradient(90deg,#d97706,var(--amber))}
+
+.score-ring{
+  width:56px;height:56px;border-radius:50%;
+  background:conic-gradient(var(--blue-bright) var(--pct,0%), var(--border) 0%);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.score-ring::after{
+  content:'';position:absolute;inset:6px;
+  background:var(--bg-card);border-radius:50%;
+}
+.score-ring span{position:relative;z-index:1;font-family:var(--font-display);font-size:13px;font-weight:800}
+
+/* ══════════════════════════════════════════════════════════
+   NOTIFICATION PANEL
+══════════════════════════════════════════════════════════ */
+.notif-panel{
+  position:absolute;top:54px;right:0;width:340px;
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);
+  overflow:hidden;z-index:200;
+  opacity:0;pointer-events:none;transform:translateY(-8px);
+  transition:all .2s;
+}
+.notif-panel.open{opacity:1;pointer-events:all;transform:translateY(0)}
+.notif-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.notif-list{max-height:360px;overflow-y:auto}
+.notif-item{
+  padding:13px 16px;border-bottom:1px solid var(--border);
+  cursor:pointer;transition:background .15s;
+  display:flex;gap:12px;align-items:flex-start;
+}
+.notif-item:hover{background:var(--bg-hover)}
+.notif-item.unread{border-left:3px solid var(--blue-bright)}
+.notif-icon{width:36px;height:36px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;background:var(--blue-glow)}
+.notif-body{flex:1}
+.notif-title{font-size:13px;font-weight:600;margin-bottom:2px}
+.notif-text{font-size:12px;color:var(--text-muted);line-height:1.4}
+.notif-time{font-size:10.5px;color:var(--text-muted);margin-top:3px}
+
+/* ══════════════════════════════════════════════════════════
+   CHART AREA (CSS-only bars)
+══════════════════════════════════════════════════════════ */
+.chart-bars{display:flex;align-items:flex-end;gap:8px;height:120px;padding:0 4px}
+.bar-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.bar-fill{width:100%;border-radius:4px 4px 0 0;transition:height .6s ease;min-height:4px;max-height:100px}
+.bar-label{font-size:10px;color:var(--text-muted);text-align:center}
+
+/* ══════════════════════════════════════════════════════════
+   PROFILE CARD
+══════════════════════════════════════════════════════════ */
+.profile-hero{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);
+  padding:32px;margin-bottom:24px;position:relative;overflow:hidden;
+}
+.profile-hero::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:200px;height:200px;border-radius:50%;
+  background:var(--blue-glow);filter:blur(40px);
+}
+.profile-banner{display:flex;align-items:flex-start;gap:20px}
+.profile-avatar{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue-core),var(--purple));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-weight:800;font-size:24px;color:#fff;
+  border:3px solid var(--border-glow);flex-shrink:0;
+}
+.profile-score-wrap{display:flex;align-items:center;gap:6px;margin-top:8px}
+.score-label{font-size:11px;color:var(--text-muted)}
+
+/* ══════════════════════════════════════════════════════════
+   PAGE VIEWS (toggled)
+══════════════════════════════════════════════════════════ */
+.page-view{display:none}
+.page-view.active{display:block}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════════════ */
+@media(max-width:1100px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:780px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .topbar{padding:0 16px}
+  .content{padding:16px}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .form-row{grid-template-columns:1fr}
+  .topbar-search{display:none}
+}
+
+/* ══════════════════════════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════════════════════════ */
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+
+.fade-in{animation:fadeIn .4s ease forwards}
+.stagger-1{animation-delay:.05s;opacity:0}
+.stagger-2{animation-delay:.1s;opacity:0}
+.stagger-3{animation-delay:.15s;opacity:0}
+.stagger-4{animation-delay:.2s;opacity:0}
+
+.skeleton{
+  background:linear-gradient(90deg,var(--bg-surface) 25%,var(--bg-elevated) 50%,var(--bg-surface) 75%);
+  background-size:400px 100%;animation:shimmer 1.4s infinite;
+  border-radius:4px;
+}
+
+/* divider */
+.divider{height:1px;background:var(--border);margin:20px 0}
+.text-blue{color:var(--blue-bright)}
+.text-muted{color:var(--text-muted)}
+.text-second{color:var(--text-second)}
+.text-green{color:var(--green)}
+.text-amber{color:var(--amber)}
+.text-red{color:var(--red)}
+.flex{display:flex}
+.flex-1{flex:1}
+.items-center{align-items:center}
+.justify-between{justify-content:space-between}
+.gap-8{gap:8px}
+.gap-12{gap:12px}
+.gap-16{gap:16px}
+.gap-24{gap:24px}
+.mb-8{margin-bottom:8px}
+.mb-16{margin-bottom:16px}
+.mb-24{margin-bottom:24px}
+.mt-8{margin-top:8px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.w-full{width:100%}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ══════════════ SIDEBAR ══════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">SQ</div>
+    <div class="logo-text">ShadowQuant<span>ITMS Platform</span></div>
+  </div>
+
+  <nav id="student-nav">
+    <div class="sidebar-section">Overview</div>
+    <a class="nav-item active" onclick="showPage('dashboard')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </a>
+    <div class="sidebar-section">Internships</div>
+    <a class="nav-item" onclick="showPage('explore')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      Explore
+    </a>
+    <a class="nav-item" onclick="showPage('applications')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+      My Applications
+      <span class="nav-badge">3</span>
+    </a>
+    <a class="nav-item" onclick="showPage('pipeline')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+      Pipeline
+    </a>
+    <div class="sidebar-section">Work</div>
+    <a class="nav-item" onclick="showPage('tasks')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,11 12,14 22,4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Tasks
+    </a>
+    <a class="nav-item" onclick="showPage('logs')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Daily Logs
+    </a>
+    <div class="sidebar-section">Growth</div>
+    <a class="nav-item" onclick="showPage('performance')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+      Performance
+    </a>
+    <a class="nav-item" onclick="showPage('documents')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Documents
+    </a>
+    <a class="nav-item" onclick="showPage('profile')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      My Profile
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-chip" onclick="toggleNotifications()">
+      <div class="avatar">AS</div>
+      <div class="user-info">
+        <div class="user-name">Arjun Sharma</div>
+        <div class="user-role">Student</div>
+      </div>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-muted)"><polyline points="6,9 12,15 18,9"/></svg>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<div class="main">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <button class="icon-btn" style="display:none" id="menu-btn" onclick="toggleSidebar()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+
+    <div class="topbar-title" id="page-title">Dashboard</div>
+
+    <div class="topbar-search">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search internships, companies…" id="global-search"/>
+    </div>
+
+    <div style="position:relative">
+      <div class="icon-btn" onclick="toggleNotifPanel()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="notif-dot"></span>
+      </div>
+      <!-- Notification Panel -->
+      <div class="notif-panel" id="notif-panel">
+        <div class="notif-header">
+          <span class="syne" style="font-size:13px;font-weight:700">Notifications</span>
+          <span class="btn btn-ghost btn-xs" onclick="markAllRead()">Mark all read</span>
+        </div>
+        <div class="notif-list" id="notif-list">
+          <div class="notif-item unread" onclick="showPage('applications')">
+            <div class="notif-icon">🎉</div>
+            <div class="notif-body">
+              <div class="notif-title">Shortlisted at Google!</div>
+              <div class="notif-text">Your application for SWE Intern has been shortlisted.</div>
+              <div class="notif-time">2 hours ago</div>
+            </div>
+          </div>
+          <div class="notif-item unread" onclick="showPage('tasks')">
+            <div class="notif-icon">📋</div>
+            <div class="notif-body">
+              <div class="notif-title">New task assigned</div>
+              <div class="notif-text">Build REST API for product module — Due Friday</div>
+              <div class="notif-time">5 hours ago</div>
+            </div>
+          </div>
+          <div class="notif-item">
+            <div class="notif-icon">📅</div>
+            <div class="notif-body">
+              <div class="notif-title">Interview scheduled</div>
+              <div class="notif-text">Microsoft SDET Intern interview on Dec 12, 10 AM</div>
+              <div class="notif-time">Yesterday</div>
+            </div>
+          </div>
+          <div class="notif-item">
+            <div class="notif-icon">⭐</div>
+            <div class="notif-body">
+              <div class="notif-title">Performance review ready</div>
+              <div class="notif-text">Your mid-term review has been submitted.</div>
+              <div class="notif-time">2 days ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="avatar" style="cursor:pointer;width:34px;height:34px;font-size:12px">AS</div>
+  </header>
+
+  <!-- Content Area -->
+  <main class="content">
+
+    <!-- ══ PAGE: DASHBOARD ══ -->
+    <div class="page-view active" id="page-dashboard">
+      <div class="flex items-center justify-between mb-24">
+        <div>
+          <h1 style="font-size:22px" class="fade-in">Good morning, Arjun 👋</h1>
+          <p class="text-muted" style="font-size:13px;margin-top:4px">Here's your internship activity today</p>
+        </div>
+        <button class="btn btn-primary" onclick="showModal('apply-modal')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Apply to Internship
+        </button>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="stats-grid">
+        <div class="stat-card blue fade-in stagger-1">
+          <div class="stat-icon blue">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+          </div>
+          <div class="stat-value">8</div>
+          <div class="stat-label">Applications Sent</div>
+          <div class="stat-delta up">↑ 2 this week</div>
+        </div>
+        <div class="stat-card amber fade-in stagger-2">
+          <div class="stat-icon amber">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+          </div>
+          <div class="stat-value">3</div>
+          <div class="stat-label">Shortlisted</div>
+          <div class="stat-delta up">↑ 1 new</div>
+        </div>
+        <div class="stat-card green fade-in stagger-3">
+          <div class="stat-icon green">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+          </div>
+          <div class="stat-value">5</div>
+          <div class="stat-label">Tasks Completed</div>
+          <div class="stat-delta up">↑ 85% rate</div>
+        </div>
+        <div class="stat-card purple fade-in stagger-4">
+          <div class="stat-icon purple">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+          </div>
+          <div class="stat-value">82</div>
+          <div class="stat-label">Performance Score</div>
+          <div class="stat-delta up">↑ +6 pts</div>
+        </div>
+      </div>
+
+      <!-- Middle Row -->
+      <div class="grid-2 mb-24">
+        <!-- Active Internship -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Current Internship</div>
+              <div class="card-sub">TechNova Solutions — Backend Engineering</div>
+            </div>
+            <span class="pill pill-active">Active</span>
+          </div>
+          <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:16px">
+            <div class="company-logo">TN</div>
+            <div>
+              <div style="font-weight:700;font-size:15px">Backend Engineering Intern</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px">Jun 1 – Aug 31, 2025 · Bangalore (Hybrid)</div>
+              <div style="margin-top:8px;display:flex;gap:8px">
+                <span class="skill-tag">Node.js</span>
+                <span class="skill-tag">MySQL</span>
+                <span class="skill-tag">REST APIs</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+            <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;text-align:center">
+              <div style="font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--blue-bright)">68%</div>
+              <div style="font-size:11px;color:var(--text-muted)">Progress</div>
+            </div>
+            <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;text-align:center">
+              <div style="font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--green)">92%</div>
+              <div style="font-size:11px;color:var(--text-muted)">Attendance</div>
+            </div>
+            <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;text-align:center">
+              <div style="font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--amber)">5/6</div>
+              <div style="font-size:11px;color:var(--text-muted)">Tasks Done</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Application Pipeline mini -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Application Pipeline</div>
+            <button class="btn btn-ghost btn-sm" onclick="showPage('pipeline')">View All</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="flex items-center gap-12">
+              <div style="width:90px;font-size:12px;color:var(--text-muted)">Applied</div>
+              <div style="flex:1;background:var(--border);border-radius:99px;height:6px;overflow:hidden">
+                <div style="width:100%;height:100%;background:var(--blue-bright);border-radius:99px"></div>
+              </div>
+              <div style="width:20px;text-align:right;font-size:12px;font-weight:700">8</div>
+            </div>
+            <div class="flex items-center gap-12">
+              <div style="width:90px;font-size:12px;color:var(--text-muted)">Shortlisted</div>
+              <div style="flex:1;background:var(--border);border-radius:99px;height:6px;overflow:hidden">
+                <div style="width:37.5%;height:100%;background:var(--amber);border-radius:99px"></div>
+              </div>
+              <div style="width:20px;text-align:right;font-size:12px;font-weight:700">3</div>
+            </div>
+            <div class="flex items-center gap-12">
+              <div style="width:90px;font-size:12px;color:var(--text-muted)">Interview</div>
+              <div style="flex:1;background:var(--border);border-radius:99px;height:6px;overflow:hidden">
+                <div style="width:25%;height:100%;background:var(--purple);border-radius:99px"></div>
+              </div>
+              <div style="width:20px;text-align:right;font-size:12px;font-weight:700">2</div>
+            </div>
+            <div class="flex items-center gap-12">
+              <div style="width:90px;font-size:12px;color:var(--text-muted)">Offer</div>
+              <div style="flex:1;background:var(--border);border-radius:99px;height:6px;overflow:hidden">
+                <div style="width:12.5%;height:100%;background:var(--green);border-radius:99px"></div>
+              </div>
+              <div style="width:20px;text-align:right;font-size:12px;font-weight:700">1</div>
+            </div>
+            <div class="flex items-center gap-12">
+              <div style="width:90px;font-size:12px;color:var(--text-muted)">Rejected</div>
+              <div style="flex:1;background:var(--border);border-radius:99px;height:6px;overflow:hidden">
+                <div style="width:25%;height:100%;background:var(--red);border-radius:99px"></div>
+              </div>
+              <div style="width:20px;text-align:right;font-size:12px;font-weight:700">2</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Row -->
+      <div class="grid-2">
+        <!-- Recent Tasks -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Recent Tasks</div>
+            <button class="btn btn-ghost btn-sm" onclick="showPage('tasks')">All Tasks</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:12px;padding:10px;background:var(--bg-surface);border-radius:var(--radius-sm)">
+              <div style="width:20px;height:20px;border-radius:50%;background:var(--green-dim);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg>
+              </div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:600">Design DB Schema for Orders</div>
+                <div style="font-size:11px;color:var(--text-muted)">Completed · Nov 28</div>
+              </div>
+              <span style="font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--green)">95/100</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:10px;background:var(--bg-surface);border-radius:var(--radius-sm)">
+              <div style="width:20px;height:20px;border-radius:50%;background:var(--amber-dim);border:2px solid var(--amber);flex-shrink:0"></div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:600">Build REST API — Product Module</div>
+                <div style="font-size:11px;color:var(--text-muted)">In Progress · Due Dec 1</div>
+              </div>
+              <span class="pill pill-shortlisted">Medium</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:10px;background:var(--bg-surface);border-radius:var(--radius-sm)">
+              <div style="width:20px;height:20px;border-radius:50%;background:var(--red-dim);border:2px solid var(--red);flex-shrink:0"></div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:600">Write unit tests (Jest) — Auth module</div>
+                <div style="font-size:11px;color:var(--text-muted)">To Do · Due Dec 5</div>
+              </div>
+              <span class="pill pill-rejected">High</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity / Chart -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Weekly Activity</div>
+            <span style="font-size:12px;color:var(--text-muted)">Nov 25 – Dec 1</span>
+          </div>
+          <div class="chart-bars" id="activity-chart"></div>
+          <div style="display:flex;gap:16px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+            <div style="flex:1;text-align:center">
+              <div style="font-family:var(--font-display);font-size:16px;font-weight:800;color:var(--blue-bright)">32h</div>
+              <div style="font-size:11px;color:var(--text-muted)">Hours Logged</div>
+            </div>
+            <div style="width:1px;background:var(--border)"></div>
+            <div style="flex:1;text-align:center">
+              <div style="font-family:var(--font-display);font-size:16px;font-weight:800;color:var(--green)">5/6</div>
+              <div style="font-size:11px;color:var(--text-muted)">Days Present</div>
+            </div>
+            <div style="width:1px;background:var(--border)"></div>
+            <div style="flex:1;text-align:center">
+              <div style="font-family:var(--font-display);font-size:16px;font-weight:800;color:var(--amber)">3</div>
+              <div style="font-size:11px;color:var(--text-muted)">Tasks Done</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: EXPLORE ══ -->
+    <div class="page-view" id="page-explore">
+      <div class="flex items-center justify-between mb-24">
+        <div>
+          <h1 style="font-size:22px">Explore Internships</h1>
+          <p class="text-muted" style="font-size:13px;margin-top:4px">248 active openings match your profile</p>
+        </div>
+        <div class="flex gap-8">
+          <button class="btn btn-secondary btn-sm">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"/></svg>
+            Filters
+          </button>
+          <button class="btn btn-secondary btn-sm">Sort: Newest</button>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+        <span class="pill pill-active" style="cursor:pointer">All</span>
+        <span class="pill pill-draft" style="cursor:pointer">Tech</span>
+        <span class="pill pill-draft" style="cursor:pointer">Design</span>
+        <span class="pill pill-draft" style="cursor:pointer">Finance</span>
+        <span class="pill pill-draft" style="cursor:pointer">Marketing</span>
+        <span class="pill pill-draft" style="cursor:pointer">Remote</span>
+        <span class="pill pill-draft" style="cursor:pointer">Paid ₹10k+</span>
+      </div>
+
+      <!-- Job Listings -->
+      <div style="display:flex;flex-direction:column;gap:14px" id="job-list">
+        <!-- Jobs injected by JS -->
+      </div>
+    </div>
+
+    <!-- ══ PAGE: APPLICATIONS ══ -->
+    <div class="page-view" id="page-applications">
+      <div class="flex items-center justify-between mb-24">
+        <div>
+          <h1 style="font-size:22px">My Applications</h1>
+          <p class="text-muted" style="font-size:13px;margin-top:4px">Tracking 8 applications</p>
+        </div>
+        <div class="tabs">
+          <span class="tab active" onclick="filterApps(this,'all')">All (8)</span>
+          <span class="tab" onclick="filterApps(this,'active')">Active</span>
+          <span class="tab" onclick="filterApps(this,'hired')">Hired</span>
+          <span class="tab" onclick="filterApps(this,'rejected')">Rejected</span>
+        </div>
+      </div>
+      <div class="card" style="padding:0">
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Company & Role</th>
+              <th>Applied On</th>
+              <th>Status</th>
+              <th>Match Score</th>
+              <th>Next Step</th>
+              <th></th>
+            </tr></thead>
+            <tbody id="app-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: PIPELINE (Kanban) ══ -->
+    <div class="page-view" id="page-pipeline">
+      <div class="flex items-center justify-between mb-24">
+        <div>
+          <h1 style="font-size:22px">Application Pipeline</h1>
+          <p class="text-muted" style="font-size:13px;margin-top:4px">Drag cards to update status</p>
+        </div>
+      </div>
+      <div class="pipeline-wrap">
+        <div class="pipeline" id="kanban-board"></div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: TASKS ══ -->
+    <div class="page-view" id="page-tasks">
+      <div class="flex items-center justify-between mb-24">
+        <div>
+          <h1 style="font-size:22px">Task Board</h1>
+          <p class="text-muted" style="font-size:13px;margin-top:4px">TechNova Solutions – Backend Internship</p>
+        </div>
+        <div class="tabs">
+          <span class="tab active">All</span>
+          <span class="tab">To Do</span>
+          <span class="tab">In Progress</span>
+          <span class="tab">Completed</span>
+        </div>
+      </div>
+      <div class="grid-3" id="task-grid"></div>
+    </div>
+
+    <!-- ══ PAGE: DAILY LOGS ══ -->
+    <div class="page-view" id="page-logs">
+      <div class="flex items-center justify-between mb-24">
+        <div>
+          <h1 style="font-size:22px">Daily Logs</h1>
+          <p class="text-muted" style="font-size:13px;margin-top:4px">November 2025</p>
+        </div>
+        <button class="btn btn-primary" onclick="showModal('log-modal')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Today's Log
+        </button>
+      </div>
+      <div class="card" style="padding:0">
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Date</th>
+              <th>Check In / Out</th>
+              <th>Hours</th>
+              <th>Summary</th>
+              <th>Mood</th>
+              <th>Status</th>
+            </tr></thead>
+            <tbody id="logs-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: PERFORMANCE ══ -->
+    <div class="page-view" id="page-performance">
+      <h1 style="font-size:22px;margin-bottom:24px">Performance Overview</h1>
+      <div class="grid-2 mb-24">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Overall Score</div>
+            <span style="font-family:var(--font-display);font-size:28px;font-weight:800;color:var(--blue-bright)">82<span style="font-size:14px;color:var(--text-muted)">/100</span></span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div><div class="flex items-center justify-between mb-8"><span style="font-size:13px;color:var(--text-second)">Technical Skills</span><span style="font-size:13px;font-weight:700">88</span></div><div class="progress-bar"><div class="progress-fill blue" style="width:88%"></div></div></div>
+            <div><div class="flex items-center justify-between mb-8"><span style="font-size:13px;color:var(--text-second)">Communication</span><span style="font-size:13px;font-weight:700">75</span></div><div class="progress-bar"><div class="progress-fill amber" style="width:75%"></div></div></div>
+            <div><div class="flex items-center justify-between mb-8"><span style="font-size:13px;color:var(--text-second)">Teamwork</span><span style="font-size:13px;font-weight:700">90</span></div><div class="progress-bar"><div class="progress-fill green" style="width:90%"></div></div></div>
+            <div><div class="flex items-center justify-between mb-8"><span style="font-size:13px;color:var(--text-second)">Punctuality</span><span style="font-size:13px;font-weight:700">95</span></div><div class="progress-bar"><div class="progress-fill green" style="width:95%"></div></div></div>
+            <div><div class="flex items-center justify-between mb-8"><span style="font-size:13px;color:var(--text-second)">Initiative</span><span style="font-size:13px;font-weight:700">72</span></div><div class="progress-bar"><div class="progress-fill blue" style="width:72%"></div></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Mid-Term Review</div><span class="pill pill-active">Shared</span></div>
+          <div style="background:var(--bg-surface);border-radius:var(--radius-md);padding:16px;margin-bottom:14px">
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Strengths</div>
+            <p style="font-size:13px;color:var(--text-second);line-height:1.6">Arjun demonstrates exceptional problem-solving abilities and quickly adapts to new codebases. His database design skills are notably advanced for an intern level.</p>
+          </div>
+          <div style="background:var(--bg-surface);border-radius:var(--radius-md);padding:16px">
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Areas of Improvement</div>
+            <p style="font-size:13px;color:var(--text-second);line-height:1.6">Should focus more on documentation and writing cleaner commit messages. Proactive communication with the team during blockers needs improvement.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: DOCUMENTS ══ -->
+    <div class="page-view" id="page-documents">
+      <div class="flex items-center justify-between mb-24">
+        <h1 style="font-size:22px">Documents</h1>
+        <button class="btn btn-primary" onclick="showModal('doc-modal')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Upload Document
+        </button>
+      </div>
+      <div class="grid-3" id="doc-grid"></div>
+    </div>
+
+    <!-- ══ PAGE: PROFILE ══ -->
+    <div class="page-view" id="page-profile">
+      <div class="profile-hero mb-24">
+        <div class="profile-banner">
+          <div class="profile-avatar">AS</div>
+          <div style="flex:1">
+            <h1 style="font-size:22px">Arjun Sharma</h1>
+            <p style="font-size:13px;color:var(--text-muted);margin-top:4px">B.Tech CSE · Bapuji Institute of Engineering & Technology · VTU</p>
+            <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+              <span class="pill pill-active">Available</span>
+              <span style="font-size:12px;color:var(--text-second);display:flex;align-items:center;gap:4px">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Davanagere, Karnataka
+              </span>
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-primary btn-sm" onclick="showModal('profile-edit-modal')">Edit Profile</button>
+          </div>
+        </div>
+        <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+          <div style="text-align:center"><div style="font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--blue-bright)">8.7</div><div style="font-size:11px;color:var(--text-muted)">GPA</div></div>
+          <div style="text-align:center"><div style="font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--amber)">8</div><div style="font-size:11px;color:var(--text-muted)">Applications</div></div>
+          <div style="text-align:center"><div style="font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--green)">82</div><div style="font-size:11px;color:var(--text-muted)">Profile Score</div></div>
+          <div style="text-align:center"><div style="font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--purple)">12</div><div style="font-size:11px;color:var(--text-muted)">Skills</div></div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Skills</div></div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span class="skill-tag">JavaScript</span><span class="skill-tag">Node.js</span><span class="skill-tag">React</span>
+            <span class="skill-tag">MySQL</span><span class="skill-tag">Python</span><span class="skill-tag">Git</span>
+            <span class="skill-tag">REST APIs</span><span class="skill-tag">Express.js</span><span class="skill-tag">Docker</span>
+            <span class="skill-tag">Java</span><span class="skill-tag">Data Structures</span><span class="skill-tag">Linux</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Education</div></div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;gap:12px">
+              <div style="width:40px;height:40px;border-radius:var(--radius-sm);background:var(--blue-glow);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🎓</div>
+              <div>
+                <div style="font-weight:700;font-size:14px">B.Tech – Computer Science & Engineering</div>
+                <div style="font-size:12px;color:var(--text-muted)">BIET, Davanagere · VTU · 2022–2026</div>
+                <div style="font-size:12px;color:var(--blue-bright);margin-top:3px">GPA: 8.7 / 10</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+</div>
+
+<!-- ══════════════ MODALS ══════════════ -->
+
+<!-- Apply Modal -->
+<div class="modal-overlay" id="apply-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Apply for Internship</div>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:4px">SWE Intern – Google</p>
+      </div>
+      <div class="modal-close" onclick="closeModal('apply-modal')">✕</div>
+    </div>
+    <div class="form-group"><label>Cover Letter</label><textarea placeholder="Tell them why you're a great fit…" rows="5"></textarea></div>
+    <div class="form-group"><label>Resume URL / Link</label><input type="url" placeholder="https://drive.google.com/…"/></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+      <button class="btn btn-secondary" onclick="closeModal('apply-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="closeModal('apply-modal');showToast('Application submitted! 🎉')">Submit Application</button>
+    </div>
+  </div>
+</div>
+
+<!-- Daily Log Modal -->
+<div class="modal-overlay" id="log-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Add Daily Log</div>
+      <div class="modal-close" onclick="closeModal('log-modal')">✕</div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Check In</label><input type="time" value="09:30"/></div>
+      <div class="form-group"><label>Check Out</label><input type="time" value="18:00"/></div>
+    </div>
+    <div class="form-group"><label>Work Summary</label><textarea placeholder="What did you work on today?…" rows="4"></textarea></div>
+    <div class="form-group">
+      <label>Mood</label>
+      <select><option>great</option><option>good</option><option>okay</option><option>difficult</option></select>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-secondary" onclick="closeModal('log-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="closeModal('log-modal');showToast('Log saved ✓')">Save Log</button>
+    </div>
+  </div>
+</div>
+
+<!-- Profile Edit Modal -->
+<div class="modal-overlay" id="profile-edit-modal">
+  <div class="modal" style="max-width:620px">
+    <div class="modal-header">
+      <div class="modal-title">Edit Profile</div>
+      <div class="modal-close" onclick="closeModal('profile-edit-modal')">✕</div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>First Name</label><input value="Arjun"/></div>
+      <div class="form-group"><label>Last Name</label><input value="Sharma"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>GPA</label><input type="number" value="8.7" step="0.1"/></div>
+      <div class="form-group"><label>Graduation Year</label><input type="number" value="2026"/></div>
+    </div>
+    <div class="form-group"><label>Bio</label><textarea>Full-stack developer with a passion for backend systems and scalable APIs. Currently pursuing B.Tech CSE at BIET, Davanagere.</textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>LinkedIn</label><input placeholder="https://linkedin.com/in/…"/></div>
+      <div class="form-group"><label>GitHub</label><input placeholder="https://github.com/…"/></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-secondary" onclick="closeModal('profile-edit-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="closeModal('profile-edit-modal');showToast('Profile updated ✓')">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Doc Upload Modal -->
+<div class="modal-overlay" id="doc-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Upload Document</div>
+      <div class="modal-close" onclick="closeModal('doc-modal')">✕</div>
+    </div>
+    <div class="form-group"><label>Document Type</label>
+      <select><option>resume</option><option>offer_letter</option><option>certificate</option><option>project_report</option><option>id_proof</option></select>
+    </div>
+    <div class="form-group"><label>Document Name</label><input placeholder="Resume – Nov 2025"/></div>
+    <div class="form-group"><label>File URL / Drive Link</label><input placeholder="https://…"/></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-secondary" onclick="closeModal('doc-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="closeModal('doc-modal');showToast('Document uploaded ✓')">Upload</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" style="
+  position:fixed;bottom:28px;right:28px;
+  background:var(--bg-elevated);border:1px solid var(--border-glow);
+  color:var(--text-primary);padding:12px 20px;border-radius:var(--radius-md);
+  font-size:13.5px;font-weight:600;z-index:9999;
+  transform:translateY(80px);transition:transform .3s ease;
+  box-shadow:var(--shadow-lg);pointer-events:none;
+"></div>
+
+<script>
+/* ══════════════════════════════════════════
+   DATA
+══════════════════════════════════════════ */
+const JOBS = [
+  { id:1, company:'Google', logo:'G', title:'Software Engineering Intern', domain:'Backend Engineering', location:'Bangalore', remote:false, duration:12, stipend:80000, skills:['Python','Go','Kubernetes'], status:'active', featured:true, deadline:'Dec 15, 2025', match:94 },
+  { id:2, company:'Microsoft', logo:'MS', title:'SDET Intern', domain:'Quality Engineering', location:'Hyderabad', remote:true, duration:8, stipend:60000, skills:['Java','Selenium','Azure DevOps'], status:'active', featured:false, deadline:'Dec 10, 2025', match:87 },
+  { id:3, company:'Flipkart', logo:'FK', title:'Data Engineering Intern', domain:'Data Engineering', location:'Bangalore', remote:false, duration:6, stipend:40000, skills:['Python','Spark','Kafka'], status:'active', featured:false, deadline:'Dec 20, 2025', match:81 },
+  { id:4, company:'Razorpay', logo:'RZ', title:'Backend Intern', domain:'Fintech', location:'Bangalore', remote:true, duration:6, stipend:50000, skills:['Node.js','Go','PostgreSQL'], status:'active', featured:false, deadline:'Jan 5, 2026', match:92 },
+  { id:5, company:'Zerodha', logo:'ZE', title:'Product Engineering Intern', domain:'Fintech', location:'Bangalore', remote:false, duration:4, stipend:35000, skills:['React','TypeScript','Redis'], status:'active', featured:false, deadline:'Jan 12, 2026', match:78 },
+];
+
+const APPS = [
+  { company:'TechNova Solutions', logo:'TN', role:'Backend Engineering Intern', date:'Nov 1, 2025', status:'hired', match:92, next:'Ongoing Internship' },
+  { company:'Google', logo:'G', role:'SWE Intern', date:'Nov 15, 2025', status:'shortlisted', match:94, next:'Interview Dec 12' },
+  { company:'Microsoft', logo:'MS', role:'SDET Intern', date:'Nov 18, 2025', status:'interview_scheduled', match:87, next:'Interview Dec 10' },
+  { company:'Razorpay', logo:'RZ', role:'Backend Intern', date:'Nov 20, 2025', status:'applied', match:91, next:'Awaiting Review' },
+  { company:'Flipkart', logo:'FK', role:'Data Engineer Intern', date:'Nov 22, 2025', status:'applied', match:81, next:'Awaiting Review' },
+  { company:'Infosys', logo:'IF', role:'Full Stack Intern', date:'Nov 5, 2025', status:'rejected', match:65, next:'—' },
+  { company:'Wipro', logo:'WP', role:'Java Intern', date:'Nov 3, 2025', status:'rejected', match:60, next:'—' },
+  { company:'Zerodha', logo:'ZE', role:'Product Engineering Intern', date:'Nov 24, 2025', status:'applied', match:78, next:'Awaiting Review' },
+];
+
+const TASKS = [
+  { title:'Design DB Schema for Orders', desc:'Create normalized MySQL schema with proper FK constraints.', priority:'high', status:'completed', due:'Nov 28', score:95 },
+  { title:'Build REST API – Product Module', desc:'Implement CRUD with pagination, sorting and filtering.', priority:'medium', status:'in_progress', due:'Dec 1', score:null },
+  { title:'Unit Tests – Auth Module', desc:'Write Jest tests covering edge cases for all auth endpoints.', priority:'high', status:'todo', due:'Dec 5', score:null },
+  { title:'Code Review – Peer PR', desc:'Review teammate\'s payment integration PR and add comments.', priority:'low', status:'completed', due:'Nov 26', score:88 },
+  { title:'API Documentation', desc:'Write Swagger/OpenAPI 3.0 spec for all v1 routes.', priority:'medium', status:'todo', due:'Dec 8', score:null },
+  { title:'Performance Audit', desc:'Profile Node.js endpoints and fix N+1 query issues.', priority:'high', status:'in_progress', due:'Dec 3', score:null },
+];
+
+const LOGS = [
+  { date:'Nov 29, 2025', in:'09:15', out:'18:30', hours:9.25, summary:'Completed order schema migration, fixed 3 failing tests', mood:'great', approved:true },
+  { date:'Nov 28, 2025', in:'09:30', out:'18:00', hours:8.5, summary:'Started REST API for product module, 60% complete', mood:'good', approved:true },
+  { date:'Nov 27, 2025', in:'09:45', out:'19:00', hours:9.25, summary:'Code review for peer PR, added 12 review comments', mood:'good', approved:null },
+  { date:'Nov 26, 2025', in:'10:00', out:'17:30', hours:7.5, summary:'API documentation – completed auth and user sections', mood:'okay', approved:null },
+  { date:'Nov 25, 2025', in:'09:20', out:'18:15', hours:8.9, summary:'Attended sprint planning, worked on DB indexing', mood:'good', approved:true },
+];
+
+const DOCS = [
+  { type:'resume', name:'Resume – Nov 2025', size:'245 KB', date:'Nov 20, 2025', icon:'📄' },
+  { type:'offer_letter', name:'Offer Letter – TechNova', size:'180 KB', date:'Jun 1, 2025', icon:'📋' },
+  { type:'certificate', name:'Certificate – AWS Cloud Practitioner', size:'512 KB', date:'Sep 15, 2025', icon:'🏆' },
+  { type:'project_report', name:'Mid-Internship Report', size:'1.2 MB', date:'Aug 1, 2025', icon:'📊' },
+  { type:'id_proof', name:'College ID Card', size:'98 KB', date:'Nov 1, 2025', icon:'🪪' },
+];
+
+/* ══════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════ */
+function showPage(name) {
+  document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  event?.currentTarget?.classList.add('active');
+  document.getElementById('page-title').textContent = {
+    dashboard:'Dashboard', explore:'Explore Internships',
+    applications:'My Applications', pipeline:'Application Pipeline',
+    tasks:'Task Board', logs:'Daily Logs',
+    performance:'Performance', documents:'Documents', profile:'My Profile'
+  }[name] || name;
+  // Lazy render
+  if (name === 'explore') renderJobs();
+  if (name === 'applications') renderApps();
+  if (name === 'pipeline') renderKanban();
+  if (name === 'tasks') renderTasks();
+  if (name === 'logs') renderLogs();
+  if (name === 'documents') renderDocs();
+}
+
+/* ══════════════════════════════════════════
+   RENDER: JOBS
+══════════════════════════════════════════ */
+function renderJobs() {
+  const list = document.getElementById('job-list');
+  list.innerHTML = JOBS.map(j => `
+    <div class="job-card ${j.featured?'featured':''}" onclick="showModal('apply-modal')">
+      <div class="job-header">
+        <div class="company-logo">${j.logo}</div>
+        <div class="job-info">
+          <div class="job-company">${j.company}</div>
+          <div class="job-title">${j.title}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">Match</div>
+          <div style="font-family:var(--font-display);font-size:16px;font-weight:800;color:${j.match>=90?'var(--green)':j.match>=80?'var(--amber)':'var(--blue-bright)'}">${j.match}%</div>
+        </div>
+      </div>
+      <div class="job-meta">
+        <span class="meta-tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${j.location}</span>
+        <span class="meta-tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>${j.duration}w</span>
+        <span class="meta-tag">${j.domain}</span>
+        ${j.remote ? '<span class="pill pill-active" style="font-size:10px;padding:2px 8px">Remote OK</span>' : ''}
+      </div>
+      <div class="job-skills">${j.skills.map(s=>`<span class="skill-tag">${s}</span>`).join('')}</div>
+      <div class="job-footer">
+        <div class="stipend">₹${(j.stipend/1000).toFixed(0)}k <small>/month</small></div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-size:11.5px;color:var(--text-muted)">Deadline: ${j.deadline}</span>
+          <button class="btn btn-primary btn-sm">Apply Now</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ══════════════════════════════════════════
+   RENDER: APPS TABLE
+══════════════════════════════════════════ */
+function renderApps() {
+  const statusMap = {
+    hired: '<span class="pill pill-hired">Hired</span>',
+    shortlisted: '<span class="pill pill-shortlisted">Shortlisted</span>',
+    interview_scheduled: '<span class="pill pill-interview" style="background:var(--purple-dim);color:var(--purple);border-color:#a855f733">Interview</span>',
+    applied: '<span class="pill pill-applied">Applied</span>',
+    rejected: '<span class="pill pill-rejected">Rejected</span>',
+  };
+  const body = document.getElementById('app-table-body');
+  body.innerHTML = APPS.map(a => `
+    <tr>
+      <td>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="company-logo" style="width:34px;height:34px;font-size:11px">${a.logo}</div>
+          <div>
+            <div style="font-weight:600;font-size:13.5px">${a.role}</div>
+            <div style="font-size:11.5px;color:var(--text-muted)">${a.company}</div>
+          </div>
+        </div>
+      </td>
+      <td style="font-size:12.5px;color:var(--text-second)">${a.date}</td>
+      <td>${statusMap[a.status] || a.status}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:48px;height:4px;background:var(--border);border-radius:99px;overflow:hidden">
+            <div style="width:${a.match}%;height:100%;background:${a.match>=90?'var(--green)':a.match>=80?'var(--amber)':'var(--blue-bright)'};border-radius:99px"></div>
+          </div>
+          <span style="font-size:12px;font-weight:700">${a.match}%</span>
+        </div>
+      </td>
+      <td style="font-size:12.5px;color:var(--text-second)">${a.next}</td>
+      <td><button class="btn btn-ghost btn-xs">View</button></td>
+    </tr>
+  `).join('');
+}
+
+/* ══════════════════════════════════════════
+   RENDER: KANBAN
+══════════════════════════════════════════ */
+function renderKanban() {
+  const cols = {
+    applied: { label:'Applied', color:'var(--blue-bright)', cards:[] },
+    shortlisted: { label:'Shortlisted', color:'var(--amber)', cards:[] },
+    interview_scheduled: { label:'Interview', color:'var(--purple)', cards:[] },
+    hired: { label:'Hired ✓', color:'var(--green)', cards:[] },
+    rejected: { label:'Rejected', color:'var(--red)', cards:[] },
+  };
+  APPS.forEach(a => { if (cols[a.status]) cols[a.status].cards.push(a); });
+  const board = document.getElementById('kanban-board');
+  board.innerHTML = Object.entries(cols).map(([key, col]) => `
+    <div class="pipeline-col" data-col="${key}">
+      <div class="col-header">
+        <span class="col-name" style="color:${col.color}">${col.label}</span>
+        <span class="col-count">${col.cards.length}</span>
+      </div>
+      <div class="col-cards">
+        ${col.cards.map(c => `
+          <div class="kcard" draggable="true">
+            <div class="kcard-company">${c.company}</div>
+            <div class="kcard-title">${c.role}</div>
+            <div class="kcard-meta">
+              <span style="font-size:11px;color:var(--text-muted)">${c.date}</span>
+              <span style="font-size:11.5px;font-weight:700;color:${c.match>=90?'var(--green)':c.match>=80?'var(--amber)':'var(--text-muted)'}">${c.match}%</span>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ══════════════════════════════════════════
+   RENDER: TASKS
+══════════════════════════════════════════ */
+function renderTasks() {
+  const priMap = { high:'pill-rejected', medium:'pill-shortlisted', low:'pill-applied', critical:'pill-rejected' };
+  const statusIco = { completed:'✓', in_progress:'⟳', todo:'○', under_review:'👁', blocked:'⛔' };
+  const grid = document.getElementById('task-grid');
+  grid.innerHTML = TASKS.map(t => `
+    <div class="card card-sm" style="cursor:pointer;transition:all .2s" onmouseenter="this.style.borderColor='var(--border-glow)'" onmouseleave="this.style.borderColor='var(--border)'">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">
+        <span class="pill ${priMap[t.priority]}" style="font-size:10px">${t.priority.toUpperCase()}</span>
+        <span style="font-size:20px">${statusIco[t.status]||'○'}</span>
+      </div>
+      <div style="font-weight:700;font-size:13.5px;margin-bottom:6px;line-height:1.3">${t.title}</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;line-height:1.5">${t.desc}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:11.5px;color:var(--text-muted)">Due ${t.due}</div>
+        ${t.score ? `<span style="font-family:var(--font-display);font-size:14px;font-weight:800;color:var(--green)">${t.score}/100</span>` : `<span style="font-size:11px;color:var(--text-muted);text-transform:capitalize">${t.status.replace('_',' ')}</span>`}
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ══════════════════════════════════════════
+   RENDER: LOGS
+══════════════════════════════════════════ */
+function renderLogs() {
+  const moodMap = { great:'🚀', good:'😊', okay:'😐', difficult:'😓' };
+  const tbody = document.getElementById('logs-table');
+  tbody.innerHTML = LOGS.map(l => `
+    <tr>
+      <td style="font-weight:600">${l.date}</td>
+      <td style="font-size:12.5px;color:var(--text-second)">${l.in} – ${l.out}</td>
+      <td style="font-family:var(--font-display);font-weight:800;color:var(--blue-bright)">${l.hours}h</td>
+      <td style="font-size:12.5px;color:var(--text-second);max-width:280px">${l.summary}</td>
+      <td>${moodMap[l.mood] || l.mood}</td>
+      <td>${l.approved === true ? '<span class="pill pill-active">Approved</span>' : l.approved === false ? '<span class="pill pill-rejected">Rejected</span>' : '<span class="pill pill-pending">Pending</span>'}</td>
+    </tr>
+  `).join('');
+}
+
+/* ══════════════════════════════════════════
+   RENDER: DOCS
+══════════════════════════════════════════ */
+function renderDocs() {
+  const grid = document.getElementById('doc-grid');
+  grid.innerHTML = DOCS.map(d => `
+    <div class="card card-sm" style="cursor:pointer;text-align:center" onmouseenter="this.style.borderColor='var(--border-glow)'" onmouseleave="this.style.borderColor='var(--border)'">
+      <div style="font-size:40px;margin-bottom:12px">${d.icon}</div>
+      <div style="font-weight:700;font-size:13px;margin-bottom:4px">${d.name}</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px">${d.size} · ${d.date}</div>
+      <span class="pill pill-draft" style="font-size:10px;text-transform:capitalize">${d.type.replace('_',' ')}</span>
+      <div style="margin-top:14px;display:flex;gap:8px;justify-content:center">
+        <button class="btn btn-secondary btn-xs">View</button>
+        <button class="btn btn-ghost btn-xs text-red">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ══════════════════════════════════════════
+   ACTIVITY CHART
+══════════════════════════════════════════ */
+function renderActivityChart() {
+  const data = [
+    { label:'Mon', h:8.5, clr:'var(--blue-bright)' },
+    { label:'Tue', h:7.0, clr:'var(--blue-bright)' },
+    { label:'Wed', h:9.0, clr:'var(--blue-bright)' },
+    { label:'Thu', h:8.0, clr:'var(--blue-bright)' },
+    { label:'Fri', h:9.5, clr:'var(--blue-bright)' },
+    { label:'Sat', h:3.0, clr:'var(--blue-dim)' },
+    { label:'Sun', h:0,   clr:'var(--border)' },
+  ];
+  const max = Math.max(...data.map(d=>d.h)) || 1;
+  const wrap = document.getElementById('activity-chart');
+  if (!wrap) return;
+  wrap.innerHTML = data.map(d => `
+    <div class="bar-item">
+      <div style="font-size:11px;color:var(--blue-bright);font-weight:700">${d.h?d.h:'—'}</div>
+      <div class="bar-fill" style="height:${(d.h/max)*80}px;background:${d.clr};"></div>
+      <div class="bar-label">${d.label}</div>
+    </div>
+  `).join('');
+}
+
+/* ══════════════════════════════════════════
+   MODALS
+══════════════════════════════════════════ */
+function showModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+/* ══════════════════════════════════════════
+   NOTIFICATIONS
+══════════════════════════════════════════ */
+function toggleNotifPanel() {
+  const p = document.getElementById('notif-panel');
+  p.classList.toggle('open');
+}
+function markAllRead() {
+  document.querySelectorAll('.notif-item.unread').forEach(i => i.classList.remove('unread'));
+  document.querySelector('.notif-dot')?.remove();
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.icon-btn') && !e.target.closest('.notif-panel')) {
+    document.getElementById('notif-panel').classList.remove('open');
+  }
+});
+
+function filterApps(el, filter) {
+  document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.transform = 'translateY(0)';
+  setTimeout(() => { t.style.transform = 'translateY(80px)'; }, 2800);
+}
+
+/* ══════════════════════════════════════════
+   INIT
+══════════════════════════════════════════ */
+renderActivityChart();
+
+// Nav click handlers
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', function() {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// Keyboard: close modals on Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+});
+</script>
+</body>
+</html>

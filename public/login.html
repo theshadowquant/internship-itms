@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Login | ShadowQuant Dynamics ITMS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-void:     #f4f6fc;
+  --bg-base:     #ffffff;
+  --bg-surface:  #edf0f8;
+  --bg-card:     #ffffff;
+  --blue-core:   #1a6cf6;
+  --blue-bright: #1a6cf6;
+  --blue-glow:   #1a6cf620;
+  --border:      #dbe0f0;
+  --border-glow: #1a6cf640;
+  --text-primary:#0c1220;
+  --text-second: #5a6684;
+  --text-muted:  #8ba0b5;
+  --radius-md:   14px;
+  --radius-lg:   20px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Background glowing details */
+body::before {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, var(--blue-glow) 0%, transparent 70%);
+  top: -150px;
+  left: -150px;
+  z-index: 1;
+}
+body::after {
+  content: '';
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+  bottom: -100px;
+  right: -100px;
+  z-index: 1;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 440px;
+  background: rgba(14, 20, 40, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(30, 40, 64, 0.8);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  z-index: 10;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.logo-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+  justify-content: center;
+}
+.logo-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--blue-core), var(--blue-bright));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  color: #fff;
+  box-shadow: 0 4px 16px var(--blue-glow);
+}
+.logo-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.2;
+}
+.logo-title span {
+  display: block;
+  font-size: 10px;
+  color: var(--blue-bright);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.welcome-msg {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.welcome-msg h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.welcome-msg p {
+  color: var(--text-second);
+  font-size: 13.5px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-second);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  color: var(--text-primary);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+}
+input:focus {
+  border-color: var(--blue-core);
+  box-shadow: 0 0 10px rgba(26, 108, 246, 0.25);
+}
+
+.form-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  font-size: 12.5px;
+}
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--text-second);
+}
+.remember-me input {
+  width: auto;
+  cursor: pointer;
+}
+.forgot-pass {
+  color: var(--blue-bright);
+  text-decoration: none;
+  font-weight: 500;
+}
+.forgot-pass:hover { text-decoration: underline; }
+
+.btn {
+  width: 100%;
+  background: var(--blue-core);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px var(--blue-glow);
+}
+.btn:hover {
+  background: var(--blue-bright);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(26, 108, 246, 0.4);
+}
+.btn:active { transform: translateY(0); }
+
+.error-banner {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  margin-bottom: 20px;
+  display: none;
+  text-align: center;
+}
+
+.signup-prompt {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 13.5px;
+  color: var(--text-second);
+}
+.signup-prompt a {
+  color: var(--blue-bright);
+  text-decoration: none;
+  font-weight: 600;
+}
+.signup-prompt a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="login-container">
+  <div class="logo-header">
+    <div class="logo-mark">SQ</div>
+    <div class="logo-title">ShadowQuant<span>ITMS Dynamics</span></div>
+  </div>
+
+  <div class="welcome-msg">
+    <h1>Welcome Back</h1>
+    <p>Sign in to your multi-tenant portal</p>
+  </div>
+
+  <div class="error-banner" id="error-banner"></div>
+
+  <form id="login-form" onsubmit="handleLogin(event)">
+    <div class="form-group">
+      <label for="email">Portal Email</label>
+      <input type="email" id="email" placeholder="name@college.edu or name@company.com" required autocomplete="email"/>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password"/>
+    </div>
+
+    <div class="form-meta">
+      <label class="remember-me">
+        <input type="checkbox" id="remember"/> Remember this device
+      </label>
+      <a href="#" class="forgot-pass" onclick="alert('Demo: Use Admin@123 / Student@123 / Employer@123 credentials')">Help credentials</a>
+    </div>
+
+    <button type="submit" class="btn" id="submit-btn">Authorize & Log In</button>
+  </form>
+
+  <p class="signup-prompt">
+    New to ITMS? <a href="/register.html">Apply for Registration</a>
+  </p>
+</div>
+
+<script>
+async function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const errorBanner = document.getElementById('error-banner');
+  const btn = document.getElementById('submit-btn');
+
+  errorBanner.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Authenticating...';
+
+  try {
+    const res = await fetch('/api/v1/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    const result = await res.json();
+    if (!result.success) {
+      throw new Error(result.message || 'Login failed. Invalid credentials.');
+    }
+
+    // Success: store tokens in localStorage
+    localStorage.setItem('access_token', result.data.access_token);
+    localStorage.setItem('refresh_token', result.data.refresh_token);
+    localStorage.setItem('user', JSON.stringify(result.data.user));
+
+    const role = result.data.user.role;
+    if (role === 'student') {
+      window.location.href = '/index.html';
+    } else if (role === 'company') {
+      window.location.href = '/company.html';
+    } else if (role === 'admin' || role === 'superadmin') {
+      window.location.href = '/admin.html';
+    } else {
+      window.location.href = '/index.html';
+    }
+  } catch (err) {
+    errorBanner.textContent = err.message;
+    errorBanner.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Authorize & Log In';
+  }
+}
+
+// Session check redirection
+if (localStorage.getItem('access_token') && localStorage.getItem('user')) {
+  try {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user.role === 'student') window.location.href = '/index.html';
+    else if (user.role === 'company') window.location.href = '/company.html';
+    else if (user.role === 'admin' || user.role === 'superadmin') window.location.href = '/admin.html';
+  } catch {}
+}
+</script>
+</body>
+</html>

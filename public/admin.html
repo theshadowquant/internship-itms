@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Control Panel | ShadowQuant Dynamics ITMS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-void:     #f4f6fc;
+  --bg-base:     #ffffff;
+  --bg-surface:  #edf0f8;
+  --bg-card:     #ffffff;
+  --bg-elevated: #e4e8f3;
+  --bg-hover:    #edf0f8;
+  --blue-core:   #1a6cf6;
+  --blue-bright: #1a6cf6;
+  --blue-glow:   #1a6cf620;
+  --blue-dim:    #1a4a9a;
+  --amber:       #f5a623;
+  --amber-dim:   #f5a62333;
+  --green:       #22c55e;
+  --green-dim:   #22c55e22;
+  --red:         #ef4444;
+  --red-dim:     #ef444422;
+  --purple:      #a855f7;
+  --purple-dim:  #a855f722;
+  --cyan:        #06b6d4;
+  --text-primary: #0c1220;
+  --text-second:  #5a6684;
+  --text-muted:   #8ba0b5;
+  --border:      #dbe0f0;
+  --border-glow: #1a6cf640;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg-void);
+  color:var(--text-primary);
+  font-family:var(--font-body);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:700;}
+.shell{display:flex;min-height:100vh}
+
+/* Sidebar */
+.sidebar{
+  width:240px;min-width:240px;background:var(--bg-base);
+  border-right:1px solid var(--border);display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;height:100vh;z-index:100;
+}
+.sidebar-logo{
+  padding:24px 20px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.logo-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,var(--blue-core),var(--blue-bright));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-weight:800;color:#fff;
+}
+.logo-text{font-family:var(--font-display);font-size:12px;font-weight:700;}
+.logo-text span{color:var(--blue-bright);display:block;font-size:10px;font-weight:400;text-transform:uppercase}
+.sidebar-section{padding:16px 12px 4px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);font-weight:600}
+.nav-item{
+  display:flex;align-items:center;gap:12px;padding:10px 16px;margin:2px 8px;
+  border-radius:var(--radius-sm);color:var(--text-second);font-size:13.5px;
+  cursor:pointer;transition:all .18s;text-decoration:none;
+}
+.nav-item:hover{background:var(--bg-hover);color:var(--text-primary)}
+.nav-item.active{background:var(--blue-glow);color:var(--blue-bright);border:1px solid var(--border-glow);}
+.sidebar-footer{margin-top:auto;padding:16px;border-top:1px solid var(--border)}
+.user-chip{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-sm);background:var(--bg-surface);cursor:pointer;}
+.avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue-core),var(--purple));display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;}
+.user-info{flex:1;min-width:0}
+.user-name{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-role{font-size:10.5px;color:var(--text-muted)}
+
+/* Main Content */
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column}
+.topbar{
+  position:sticky;top:0;z-index:90;background:var(--bg-void);border-bottom:1px solid var(--border);
+  padding:0 28px;height:60px;display:flex;align-items:center;backdrop-filter:blur(12px);
+}
+.topbar-title{font-family:var(--font-display);font-size:16px;font-weight:700;flex:1}
+.content{padding:28px;flex:1}
+
+/* Grid & Cards */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;}
+.stat-icon{width:40px;height:40px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.stat-icon.blue{background:var(--blue-glow);color:var(--blue-bright)}
+.stat-icon.amber{background:var(--amber-dim);color:var(--amber)}
+.stat-icon.green{background:var(--green-dim);color:var(--green)}
+.stat-icon.purple{background:var(--purple-dim);color:var(--purple)}
+.stat-value{font-family:var(--font-display);font-size:28px;font-weight:800;line-height:1;margin-bottom:6px}
+.stat-label{font-size:12px;color:var(--text-muted)}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.card-title{font-family:var(--font-display);font-size:14px;font-weight:700;}
+
+/* Charts Area */
+.chart-bars{display:flex;align-items:flex-end;gap:12px;height:120px;padding:10px 4px}
+.bar-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.bar-fill{width:100%;border-radius:4px 4px 0 0;min-height:4px;max-height:100px;transition:height .4s ease;}
+.bar-label{font-size:10px;color:var(--text-second)}
+
+/* Table & Buttons */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{padding:10px 14px;text-align:left;font-size:11px;color:var(--text-muted);text-transform:uppercase}
+td{padding:13px 14px;border-bottom:1px solid var(--border);font-size:13.5px;}
+.pill{display:inline-flex;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:600;}
+.pill-match{background:var(--blue-glow);color:var(--blue-bright)}
+.pill-branch{background:var(--bg-elevated);color:var(--text-second)}
+.pill-active{background:var(--green-dim);color:var(--green)}
+.pill-pending{background:var(--amber-dim);color:var(--amber)}
+
+.btn{
+  display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:var(--radius-sm);
+  font-size:12.5px;font-weight:600;cursor:pointer;border:none;transition:all .18s;text-decoration:none;
+}
+.btn-primary{background:var(--blue-core);color:#fff;}
+.btn-primary:hover{background:var(--blue-bright)}
+.btn-secondary{background:var(--bg-elevated);color:var(--text-primary);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--bg-hover)}
+.btn-danger{background:var(--red-dim);color:var(--red);border:1px solid rgba(239,68,68,0.2)}
+.btn-danger:hover{background:#ef444433}
+.btn-xs{padding:3px 7px;font-size:10.5px}
+
+.page-view{display:none}
+.page-view.active{display:block}
+</style>
+</head>
+<body>
+<div class="shell">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">SQ</div>
+      <div class="logo-text">ShadowQuant<span>Admin Control</span></div>
+    </div>
+    <nav>
+      <div class="sidebar-section">Monitoring</div>
+      <a class="nav-item active" onclick="showPage('dashboard')">Dashboard</a>
+      <a class="nav-item" onclick="showPage('moderation')">Job Approval</a>
+      <div class="sidebar-section">Administration</div>
+      <a class="nav-item" onclick="showPage('users')">User Accounts</a>
+      <a class="nav-item" onclick="showPage('tenants')">B2B Tenants</a>
+      <a class="nav-item" onclick="showPage('audit')">Audit Trails</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-chip" onclick="logout()">
+        <div class="avatar" id="avatar-letters">SA</div>
+        <div class="user-info">
+          <div class="user-name" id="admin-name">Super Admin</div>
+          <div class="user-role">Platform Owner</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-title" id="page-title">Dashboard</div>
+      <button class="btn btn-secondary btn-sm" onclick="logout()">Log Out</button>
+    </header>
+
+    <main class="content">
+      <!-- ══ PAGE: DASHBOARD ══ -->
+      <div class="page-view active" id="page-admin-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon blue">👥</div>
+            <div class="stat-value" id="stat-students">2</div>
+            <div class="stat-label">Registered Students</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">🏢</div>
+            <div class="stat-value" id="stat-companies">2</div>
+            <div class="stat-label">Hiring Companies</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon amber">💼</div>
+            <div class="stat-value" id="stat-postings">3</div>
+            <div class="stat-label">Total Internships</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple">🎯</div>
+            <div class="stat-value" id="stat-placement">33.3%</div>
+            <div class="stat-label">SaaS Placement Rate</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Skill Demand Chart -->
+          <div class="card">
+            <div class="card-header"><div class="card-title">Hiring Demands (Skills)</div></div>
+            <div class="chart-bars" id="skills-chart">
+              <!-- Rendered via script -->
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:12px;font-size:11px;color:var(--text-muted)">
+              <span>Python (Cloud)</span>
+              <span>Node.js (REST)</span>
+              <span>MySQL (Database)</span>
+              <span>React (Frontend)</span>
+            </div>
+          </div>
+
+          <!-- Monthly Trend Chart -->
+          <div class="card">
+            <div class="card-header"><div class="card-title">University Placement Funnel</div></div>
+            <div class="chart-bars" id="placement-chart">
+              <!-- Rendered via script -->
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:12px;font-size:11px;color:var(--text-muted)">
+              <span>Applied</span>
+              <span>Shortlisted</span>
+              <span>Interviewed</span>
+              <span>Hired</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PAGE: MODERATION ══ -->
+      <div class="page-view" id="page-admin-moderation">
+        <h1 style="font-size:22px;margin-bottom:6px">Internship Moderation Desk</h1>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px">Approve or reject employer postings before they become visible to students</p>
+        <div class="card" style="padding:0">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Job Title</th><th>Company</th><th>Domain</th><th>Stipend</th><th>Eligible Branches</th><th>Actions</th></tr></thead>
+              <tbody id="moderation-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PAGE: USERS ══ -->
+      <div class="page-view" id="page-admin-users">
+        <h1 style="font-size:22px;margin-bottom:6px">User Account Registry</h1>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px">Toggle active status or manage permissions across all tenants</p>
+        <div class="card" style="padding:0">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>User Info</th><th>Role</th><th>Status</th><th>Last Login</th><th>Joined On</th><th>Action</th></tr></thead>
+              <tbody id="users-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PAGE: TENANTS ══ -->
+      <div class="page-view" id="page-admin-tenants">
+        <h1 style="font-size:22px;margin-bottom:6px">B2B University Tenants</h1>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px">Manage active multi-tenant colleges and tier subscriptions</p>
+        <div class="card" style="padding:0">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>University Name</th><th>Domain</th><th>SaaS Tier Plan</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="tenants-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PAGE: AUDIT ══ -->
+      <div class="page-view" id="page-admin-audit">
+        <h1 style="font-size:22px;margin-bottom:6px">Platform Audit Logs</h1>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px">Non-repudiation security logging of actor actions, IP trails, and timestamps</p>
+        <div class="card" style="padding:0">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Actor</th><th>Action Event</th><th>Entity Type</th><th>IP Address</th><th>User Agent</th><th>Timestamp</th></tr></thead>
+              <tbody id="audit-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+// Mock Fallbacks
+const MOCK_JOBS = [
+  { id: '00000000-0000-0000-0003-000000000003', company: 'Google', title: 'Data Engineering Intern', domain: 'Data Engineering', stipend: '₹60k - ₹75k', branches: ['CSE', 'ISE', 'ECE'], status: 'pending_approval' }
+];
+
+const MOCK_USERS = [
+  { id: 'u-1', email: 'arjun@biet.edu', name: 'Arjun Sharma', role: 'student', active: true, last_login: '2026-05-29 12:15', created_at: '2026-05-01' },
+  { id: 'u-2', email: 'hr@google.com', name: 'Google Recruiter', role: 'company', active: true, last_login: '2026-05-29 10:30', created_at: '2026-05-03' },
+  { id: 'u-3', email: 'hr@technova.io', name: 'TechNova HR', role: 'company', active: true, last_login: '2026-05-28 09:12', created_at: '2026-05-02' },
+  { id: 'u-4', email: 'placement@biet.edu', name: 'BIET Placement Cell', role: 'admin', active: true, last_login: '2026-05-29 08:00', created_at: '2026-04-20' }
+];
+
+const MOCK_TENANTS = [
+  { id: 't-1', name: 'ShadowQuant Dynamics', domain: 'shadowquant.io', plan: 'enterprise', active: true },
+  { id: 't-2', name: 'Bapuji Institute of Engineering & Technology', domain: 'biet.edu', plan: 'pro', active: true },
+  { id: 't-3', name: 'RV College of Engineering', domain: 'rvce.edu', plan: 'enterprise', active: true }
+];
+
+const MOCK_AUDITS = [
+  { actor: 'arjun@biet.edu', action: 'auth.login', type: 'user', ip: '127.0.0.1', ua: 'Chrome / Windows', ts: '2 hours ago' },
+  { actor: 'hr@technova.io', action: 'application.status_change', type: 'application', ip: '192.168.1.14', ua: 'Firefox / Mac', ts: '1 day ago' },
+  { actor: 'placement@rvce.edu', action: 'tenant.settings_update', type: 'tenant', ip: '10.0.0.8', ua: 'Safari / iPad', ts: '3 days ago' }
+];
+
+function showPage(name) {
+  document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  
+  if (name === 'dashboard') {
+    document.getElementById('page-admin-dashboard').classList.add('active');
+    renderCharts();
+  } else {
+    document.getElementById('page-admin-' + name).classList.add('active');
+  }
+  
+  const currentNav = Array.from(document.querySelectorAll('.nav-item')).find(el => el.textContent.toLowerCase().includes(name === 'moderation' ? 'approval' : name));
+  if (currentNav) currentNav.classList.add('active');
+  
+  document.getElementById('page-title').textContent = {
+    dashboard: 'Platform Control Desk',
+    moderation: 'Moderation Desk',
+    users: 'User Account Registry',
+    tenants: 'B2B Tenant Organizations',
+    audit: 'System Audit trails'
+  }[name] || 'Admin';
+
+  if (name === 'moderation') renderModeration();
+  if (name === 'users') renderUsers();
+  if (name === 'tenants') renderTenants();
+  if (name === 'audit') renderAudits();
+}
+
+function logout() {
+  localStorage.clear();
+  window.location.href = '/login.html';
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  const userStr = localStorage.getItem('user');
+  const token = localStorage.getItem('access_token');
+  if (!token || !userStr) {
+    window.location.href = '/login.html';
+    return;
+  }
+  const user = JSON.parse(userStr);
+  if (user.role !== 'admin' && user.role !== 'superadmin') {
+    window.location.href = '/login.html';
+    return;
+  }
+  document.getElementById('admin-name').textContent = user.first_name + ' ' + user.last_name;
+  document.getElementById('avatar-letters').textContent = user.first_name.charAt(0) + user.last_name.charAt(0);
+  
+  renderCharts();
+});
+
+function renderCharts() {
+  // Skill demands chart
+  const skillsChart = document.getElementById('skills-chart');
+  const skillData = [85, 70, 50, 40];
+  skillsChart.innerHTML = skillData.map(h => `
+    <div class="bar-item">
+      <div class="bar-fill" style="height:${h}px;background:var(--blue-bright);"></div>
+    </div>
+  `).join('');
+
+  // Placement funnel chart
+  const placementChart = document.getElementById('placement-chart');
+  const funnelData = [100, 60, 40, 20];
+  const colors = ['var(--blue-bright)', 'var(--amber)', 'var(--purple)', 'var(--green)'];
+  placementChart.innerHTML = funnelData.map((h, i) => `
+    <div class="bar-item">
+      <div class="bar-fill" style="height:${h}px;background:${colors[i]};"></div>
+    </div>
+  `).join('');
+}
+
+function renderModeration() {
+  const tbody = document.getElementById('moderation-tbody');
+  if (MOCK_JOBS.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="color:var(--text-muted);text-align:center">Moderation desk clear! No pending postings ✓</td></tr>';
+  } else {
+    tbody.innerHTML = MOCK_JOBS.map(j => `
+      <tr>
+        <td><strong>${j.title}</strong></td>
+        <td>${j.company}</td>
+        <td>${j.domain}</td>
+        <td><strong style="color:var(--green)">${j.stipend}</strong></td>
+        <td>${j.branches.map(b => `<span class="pill pill-branch">${b}</span>`).join(' ')}</td>
+        <td>
+          <button class="btn btn-primary btn-xs" onclick="approveJob('${j.id}')">Approve</button>
+          <button class="btn btn-danger btn-xs" onclick="rejectJob('${j.id}')">Reject</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+}
+
+async function approveJob(jobId) {
+  const index = MOCK_JOBS.findIndex(j => j.id === jobId);
+  if (index !== -1) {
+    MOCK_JOBS.splice(index, 1);
+    
+    // hit API
+    try {
+      await fetch(`/api/v1/internships/${jobId}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+        },
+        body: JSON.stringify({ status: 'active', admin_note: 'Approved by system platform administrator.' })
+      });
+    } catch {}
+    
+    renderModeration();
+    document.getElementById('stat-postings').textContent = 4; // increment
+  }
+}
+
+async function rejectJob(jobId) {
+  const index = MOCK_JOBS.findIndex(j => j.id === jobId);
+  if (index !== -1) {
+    MOCK_JOBS.splice(index, 1);
+    try {
+      await fetch(`/api/v1/internships/${jobId}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+        },
+        body: JSON.stringify({ status: 'rejected', admin_note: 'Posting fails verification checks.' })
+      });
+    } catch {}
+    renderModeration();
+  }
+}
+
+function renderUsers() {
+  const tbody = document.getElementById('users-tbody');
+  tbody.innerHTML = MOCK_USERS.map(u => `
+    <tr>
+      <td>
+        <strong>${u.name}</strong>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:2px">${u.email}</div>
+      </td>
+      <td><span class="pill pill-branch" style="text-transform:capitalize">${u.role}</span></td>
+      <td><span class="pill ${u.active?'pill-active':'pill-branch'}">${u.active?'ACTIVE':'DEACTIVATED'}</span></td>
+      <td style="color:var(--text-second)">${u.last_login}</td>
+      <td style="color:var(--text-second)">${u.created_at}</td>
+      <td>
+        <button class="btn btn-secondary btn-xs" onclick="toggleUser('${u.id}')">${u.active?'Deactivate':'Activate'}</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function toggleUser(userId) {
+  const user = MOCK_USERS.find(u => u.id === userId);
+  if (user) {
+    user.active = !user.active;
+    
+    // hit API
+    try {
+      await fetch(`/api/v1/admin/users/${userId}/toggle-active`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+        }
+      });
+    } catch {}
+    
+    renderUsers();
+  }
+}
+
+function renderTenants() {
+  const tbody = document.getElementById('tenants-tbody');
+  tbody.innerHTML = MOCK_TENANTS.map(t => `
+    <tr>
+      <td><strong>${t.name}</strong></td>
+      <td>${t.domain}</td>
+      <td><span class="pill pill-match" style="text-transform:uppercase">${t.plan}</span></td>
+      <td><span class="pill ${t.active?'pill-active':'pill-branch'}">ACTIVE</span></td>
+      <td>
+        <button class="btn btn-secondary btn-xs" onclick="alert('Demo: Plan changes restricted')">Modify Plan</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderAudits() {
+  const tbody = document.getElementById('audit-tbody');
+  tbody.innerHTML = MOCK_AUDITS.map(a => `
+    <tr>
+      <td><strong>${a.actor}</strong></td>
+      <td><code style="color:var(--blue-bright)">${a.action}</code></td>
+      <td><span class="pill pill-branch">${a.type.toUpperCase()}</span></td>
+      <td><code>${a.ip}</code></td>
+      <td style="font-size:11.5px;color:var(--text-second)">${a.ua}</td>
+      <td style="color:var(--text-second)">${a.ts}</td>
+    </tr>
+  `).join('');
+}
+</script>
+</body>
+</html>

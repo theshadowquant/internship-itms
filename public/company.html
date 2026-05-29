@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Employer Portal | ShadowQuant Dynamics ITMS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-void:     #f4f6fc;
+  --bg-base:     #ffffff;
+  --bg-surface:  #edf0f8;
+  --bg-card:     #ffffff;
+  --bg-elevated: #e4e8f3;
+  --bg-hover:    #edf0f8;
+  --blue-core:   #1a6cf6;
+  --blue-bright: #1a6cf6;
+  --blue-glow:   #1a6cf620;
+  --blue-dim:    #1a4a9a;
+  --amber:       #f5a623;
+  --amber-dim:   #f5a62333;
+  --green:       #22c55e;
+  --green-dim:   #22c55e22;
+  --red:         #ef4444;
+  --red-dim:     #ef444422;
+  --purple:      #a855f7;
+  --purple-dim:  #a855f722;
+  --cyan:        #06b6d4;
+  --text-primary: #0c1220;
+  --text-second:  #5a6684;
+  --text-muted:   #8ba0b5;
+  --border:      #dbe0f0;
+  --border-glow: #1a6cf640;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg-void);
+  color:var(--text-primary);
+  font-family:var(--font-body);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:700;}
+.shell{display:flex;min-height:100vh}
+
+/* Sidebar */
+.sidebar{
+  width:240px;min-width:240px;background:var(--bg-base);
+  border-right:1px solid var(--border);display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;height:100vh;z-index:100;
+}
+.sidebar-logo{
+  padding:24px 20px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.logo-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,var(--blue-core),var(--blue-bright));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-weight:800;color:#fff;
+}
+.logo-text{font-family:var(--font-display);font-size:12px;font-weight:700;}
+.logo-text span{color:var(--blue-bright);display:block;font-size:10px;font-weight:400;text-transform:uppercase}
+.sidebar-section{padding:16px 12px 4px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);font-weight:600}
+.nav-item{
+  display:flex;align-items:center;gap:12px;padding:10px 16px;margin:2px 8px;
+  border-radius:var(--radius-sm);color:var(--text-second);font-size:13.5px;
+  cursor:pointer;transition:all .18s;text-decoration:none;
+}
+.nav-item:hover{background:var(--bg-hover);color:var(--text-primary)}
+.nav-item.active{background:var(--blue-glow);color:var(--blue-bright);border:1px solid var(--border-glow);}
+.sidebar-footer{margin-top:auto;padding:16px;border-top:1px solid var(--border)}
+.user-chip{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-sm);background:var(--bg-surface);cursor:pointer;}
+.avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue-core),var(--purple));display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;}
+.user-info{flex:1;min-width:0}
+.user-name{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-role{font-size:10.5px;color:var(--text-muted)}
+
+/* Main Content */
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column}
+.topbar{
+  position:sticky;top:0;z-index:90;background:var(--bg-void);border-bottom:1px solid var(--border);
+  padding:0 28px;height:60px;display:flex;align-items:center;backdrop-filter:blur(12px);
+}
+.topbar-title{font-family:var(--font-display);font-size:16px;font-weight:700;flex:1}
+.content{padding:28px;flex:1}
+
+/* Grid & Cards */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;position:relative;overflow:hidden;}
+.stat-icon{width:40px;height:40px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.stat-icon.blue{background:var(--blue-glow);color:var(--blue-bright)}
+.stat-icon.amber{background:var(--amber-dim);color:var(--amber)}
+.stat-icon.green{background:var(--green-dim);color:var(--green)}
+.stat-icon.purple{background:var(--purple-dim);color:var(--purple)}
+.stat-value{font-family:var(--font-display);font-size:28px;font-weight:800;line-height:1;margin-bottom:6px}
+.stat-label{font-size:12px;color:var(--text-muted)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.card-title{font-family:var(--font-display);font-size:14px;font-weight:700;}
+
+/* Pipeline Kanban */
+.pipeline{display:flex;gap:16px;overflow-x:auto;padding-bottom:10px}
+.pipeline-col{width:260px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);flex-shrink:0}
+.col-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.col-name{font-family:var(--font-display);font-size:12px;font-weight:700;text-transform:uppercase}
+.col-count{font-size:11px;font-weight:700;background:var(--bg-card);color:var(--text-muted);padding:2px 8px;border-radius:99px}
+.col-cards{padding:10px;display:flex;flex-direction:column;gap:8px;min-height:200px}
+.kcard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px;cursor:pointer;transition:all .18s;}
+.kcard:hover{border-color:var(--border-glow);transform:translateY(-1px)}
+.kcard-student{font-size:13px;font-weight:600;}
+.kcard-college{font-size:11px;color:var(--text-muted);margin:3px 0 8px;}
+.pill{display:inline-flex;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:600;}
+.pill-match{background:var(--blue-glow);color:var(--blue-bright)}
+.pill-branch{background:var(--bg-elevated);color:var(--text-second)}
+
+/* Table & Buttons */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{padding:10px 14px;text-align:left;font-size:11px;color:var(--text-muted);text-transform:uppercase}
+td{padding:13px 14px;border-bottom:1px solid var(--border);font-size:13.5px;}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:var(--radius-sm);
+  font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .18s;text-decoration:none;
+}
+.btn-primary{background:var(--blue-core);color:#fff;}
+.btn-primary:hover{background:var(--blue-bright);transform:translateY(-1px)}
+.btn-secondary{background:var(--bg-elevated);color:var(--text-primary);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--bg-hover)}
+.btn-sm{padding:6px 12px;font-size:12px}
+.btn-xs{padding:4px 8px;font-size:11px}
+
+/* Modals */
+.modal-overlay{
+  position:fixed;inset:0;z-index:500;background:rgba(3,4,10,.85);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);
+  width:100%;max-width:540px;padding:28px;box-shadow:0 16px 48px #000;
+}
+.form-group{margin-bottom:16px}
+label{display:block;font-size:12px;font-weight:600;color:var(--text-second);margin-bottom:7px}
+input,select,textarea{width:100%;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px;color:var(--text-primary);outline:none;font-family:inherit;}
+input:focus,select:focus,textarea:focus{border-color:var(--blue-core)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.page-view{display:none}
+.page-view.active{display:block}
+</style>
+</head>
+<body>
+<div class="shell">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">SQ</div>
+      <div class="logo-text">ShadowQuant<span>Employer Portal</span></div>
+    </div>
+    <nav>
+      <div class="sidebar-section">Overview</div>
+      <a class="nav-item active" onclick="showPage('dashboard')">Dashboard</a>
+      <a class="nav-item" onclick="showPage('pipeline')">Applicant Pipeline</a>
+      <div class="sidebar-section">Management</div>
+      <a class="nav-item" onclick="showPage('listings')">My Listings</a>
+      <a class="nav-item" onclick="showPage('tasks')">Task Board</a>
+      <a class="nav-item" onclick="showPage('logs')">Daily Logs</a>
+      <a class="nav-item" onclick="showPage('performance')">Appraisals</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-chip" onclick="logout()">
+        <div class="avatar" id="avatar-letters">HR</div>
+        <div class="user-info">
+          <div class="user-name" id="hr-name">Recruiter HR</div>
+          <div class="user-role">Employer Portal</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-title" id="page-title">Dashboard</div>
+      <button class="btn btn-secondary btn-sm" onclick="logout()">Log Out</button>
+    </header>
+
+    <main class="content">
+      <!-- ══ PAGE: DASHBOARD ══ -->
+      <div class="page-view active" id="page-company-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon blue">📋</div>
+            <div class="stat-value" id="count-postings">2</div>
+            <div class="stat-label">Active Listings</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon amber">👥</div>
+            <div class="stat-value" id="count-applicants">3</div>
+            <div class="stat-label">Total Applicants</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">✅</div>
+            <div class="stat-value" id="count-hired">1</div>
+            <div class="stat-label">Hired Interns</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple">⭐</div>
+            <div class="stat-value" id="company-rating">4.2</div>
+            <div class="stat-label">Employer Rating</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Pending Approvals</div>
+              <button class="btn btn-secondary btn-xs" onclick="showPage('logs')">View Logs</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Student</th><th>Date</th><th>Hours</th><th>Action</th></tr></thead>
+                <tbody id="dashboard-logs-tbody">
+                  <tr><td colspan="4" style="color:var(--text-muted);text-align:center">No pending approvals</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Recent Applicants</div>
+              <button class="btn btn-secondary btn-xs" onclick="showPage('pipeline')">Pipeline</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Student</th><th>Role</th><th>Match</th><th>Action</th></tr></thead>
+                <tbody id="dashboard-apps-tbody">
+                  <tr><td colspan="4" style="color:var(--text-muted);text-align:center">No applications</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PAGE: PIPELINE ══ -->
+      <div class="page-view" id="page-company-pipeline">
+        <div style="display:flex;justify-content:between;align-items:center;margin-bottom:24px">
+          <div>
+            <h1 style="font-size:22px">Candidate Pipelines</h1>
+            <p style="font-size:13px;color:var(--text-muted)">Evaluate applications and schedule interviews</p>
+          </div>
+        </div>
+        <div class="pipeline" id="kanban-pipeline"></div>
+      </div>
+
+      <!-- ══ PAGE: LISTINGS ══ -->
+      <div class="page-view" id="page-company-listings">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+          <div>
+            <h1 style="font-size:22px">Internship Postings</h1>
+            <p style="font-size:13px;color:var(--text-muted)">Manage your current B2B postings</p>
+          </div>
+          <button class="btn btn-primary" onclick="openModal('post-modal')">Post New Internship</button>
+        </div>
+        <div class="card" style="padding:0">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Job Title</th><th>Domain</th><th>Openings</th><th>Views</th><th>Apps</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="listings-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PAGE: TASKS ══ -->
+      <div class="page-view" id="page-company-tasks">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+          <div>
+            <h1 style="font-size:22px">Task Assignment Board</h1>
+            <p style="font-size:13px;color:var(--text-muted)">Track tasks and grade student work submissions</p>
+          </div>
+          <button class="btn btn-primary" onclick="openModal('task-modal')">Assign Project Task</button>
+        </div>
+        <div class="card" style="padding:0">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Task Title</th><th>Priority</th><th>Due Date</th><th>Intern Status</th><th>Grade</th><th>Actions</th></tr></thead>
+              <tbody id="tasks-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PAGE: LOGS ══ -->
+      <div class="page-view" id="page-company-logs">
+        <h1 style="font-size:22px;margin-bottom:6px">Attendance & Logs</h1>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px">Verify daily hours worked by your hired interns</p>
+        <div class="card" style="padding:0">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Date</th><th>Intern</th><th>Hours Worked</th><th>Work Summary</th><th>Mood</th><th>Verification</th><th>Action</th></tr></thead>
+              <tbody id="logs-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PAGE: PERFORMANCE ══ -->
+      <div class="page-view" id="page-company-performance">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+          <div>
+            <h1 style="font-size:22px">Performance Reviews</h1>
+            <p style="font-size:13px;color:var(--text-muted)">Score student outcomes across skills and communication</p>
+          </div>
+          <button class="btn btn-primary" onclick="openModal('review-modal')">Submit Performance Appraisal</button>
+        </div>
+        <div class="card" style="padding:0">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Student</th><th>Review Stage</th><th>Technical</th><th>Punctual</th><th>Overall</th><th>Strengths & Improvements</th></tr></thead>
+              <tbody id="reviews-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- MODAL: Post Internship -->
+<div class="modal-overlay" id="post-modal">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;margin-bottom:20px">
+      <h3>Publish New Internship</h3>
+      <span style="cursor:pointer" onclick="closeModal('post-modal')">✕</span>
+    </div>
+    <form id="post-form" onsubmit="publishJob(event)">
+      <div class="form-group"><label>Job Title</label><input type="text" id="job_title" placeholder="SWE Backend Intern" required/></div>
+      <div class="form-row">
+        <div class="form-group"><label>Domain</label><input type="text" id="job_domain" placeholder="Backend Engineering"/></div>
+        <div class="form-group"><label>Location</label><input type="text" id="job_location" placeholder="Bangalore / Remote"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Stipend / Month (₹)</label><input type="number" id="job_stipend" placeholder="40000"/></div>
+        <div class="form-group"><label>Duration (Weeks)</label><input type="number" id="job_duration" value="12"/></div>
+      </div>
+      <div class="form-group"><label>Skills Required (Comma separated)</label><input type="text" id="job_skills" placeholder="Node.js, MySQL, REST APIs"/></div>
+      <div class="form-group"><label>Detailed Description</label><textarea id="job_description" rows="3" placeholder="Describe the intern outcomes..." required></textarea></div>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('post-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Post & Send for Approval</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: Assign Task -->
+<div class="modal-overlay" id="task-modal">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;margin-bottom:20px">
+      <h3>Assign Task to Intern</h3>
+      <span style="cursor:pointer" onclick="closeModal('task-modal')">✕</span>
+    </div>
+    <form id="task-form" onsubmit="assignTask(event)">
+      <div class="form-group"><label>Task Title</label><input type="text" id="task_title" placeholder="Implement Jest Unit Tests" required/></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Assign to Intern</label>
+          <select id="task_application_id">
+            <option value="00000000-0000-0000-0004-000000000002">Arjun Sharma (TechNova)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Priority</label>
+          <select id="task_priority"><option>medium</option><option>high</option><option>critical</option><option>low</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label>Due Date</label><input type="date" id="task_due_date" required/></div>
+      <div class="form-group"><label>Instructions & Specs</label><textarea id="task_description" rows="3" placeholder="What are the deliverables?"></textarea></div>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('task-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Assign Task</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: Grade Task -->
+<div class="modal-overlay" id="grade-modal">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;margin-bottom:20px">
+      <h3>Grade Task Submission</h3>
+      <span style="cursor:pointer" onclick="closeModal('grade-modal')">✕</span>
+    </div>
+    <form id="grade-form" onsubmit="submitGrade(event)">
+      <input type="hidden" id="grade_task_id"/>
+      <div class="form-group"><label>Performance Score (0 - 100)</label><input type="number" id="grade_score" min="0" max="100" value="90" required/></div>
+      <div class="form-group"><label>Supervisor Feedback Comments</label><textarea id="grade_feedback" rows="3" placeholder="Write feedback details..."></textarea></div>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('grade-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit Grade</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: Submit Appraisal -->
+<div class="modal-overlay" id="review-modal">
+  <div class="modal" style="max-width:600px">
+    <div style="display:flex;justify-content:space-between;margin-bottom:20px">
+      <h3>Submit Performance Review</h3>
+      <span style="cursor:pointer" onclick="closeModal('review-modal')">✕</span>
+    </div>
+    <form id="review-form" onsubmit="submitReview(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Student Intern</label>
+          <select id="rev_app_id"><option value="00000000-0000-0000-0004-000000000002">Arjun Sharma</option></select>
+        </div>
+        <div class="form-group">
+          <label>Review Phase</label>
+          <select id="rev_type"><option>mid_term</option><option>final</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Technical Score (0-100)</label><input type="number" id="rev_tech" value="85"/></div>
+        <div class="form-group"><label>Communication (0-100)</label><input type="number" id="rev_comm" value="80"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Teamwork (0-100)</label><input type="number" id="rev_team" value="85"/></div>
+        <div class="form-group"><label>Overall Grade Score (0-100)</label><input type="number" id="rev_overall" value="85"/></div>
+      </div>
+      <div class="form-group"><label>Core Strengths</label><textarea id="rev_strengths" rows="2" placeholder="What did they do best?"></textarea></div>
+      <div class="form-group"><label>Areas of Improvement</label><textarea id="rev_improvements" rows="2" placeholder="Where can they focus next?"></textarea></div>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('review-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Publish Review</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// Mock data fallbacks if server offline
+const MOCK_JOBS = [
+  { id: 'job-1', title: 'Backend Engineering Intern', domain: 'Backend Engineering', stipend_min: 30000, stipend_max: 40000, openings: 2, views: 24, applications_count: 1, status: 'active' },
+  { id: 'job-2', title: 'Full Stack React Intern', domain: 'Frontend Engineering', stipend_min: 25000, stipend_max: 30000, openings: 1, views: 8, applications_count: 0, status: 'pending_approval' }
+];
+
+const MOCK_APPS = [
+  { id: 'app-1', student_name: 'Arjun Sharma', college: 'BIET Davanagere', role: 'Backend Engineering Intern', match: 92, status: 'hired', email: 'arjun@biet.edu', branch: 'CSE' },
+  { id: 'app-2', student_name: 'Ananya Rao', college: 'RVCE Bangalore', role: 'Backend Engineering Intern', match: 88, status: 'applied', email: 'ananya@rvce.edu', branch: 'ISE' },
+  { id: 'app-3', student_name: 'Rohan Verma', college: 'BIET Davanagere', role: 'Backend Engineering Intern', match: 74, status: 'shortlisted', email: 'rohan@biet.edu', branch: 'ECE' }
+];
+
+const MOCK_TASKS = [
+  { id: 'task-1', title: 'Design DB Schema for Orders', priority: 'high', due: '2026-05-28', status: 'completed', score: 95, feedback: 'Excellent DB schema design.' },
+  { id: 'task-2', title: 'Build REST API — Product Module', priority: 'medium', due: '2026-06-01', status: 'in_progress', score: null, feedback: '' }
+];
+
+const MOCK_LOGS = [
+  { id: 'log-1', date: '2026-05-29', student: 'Arjun Sharma', hours: 9.25, summary: 'Completed order schema migration and fixed Jest tests.', mood: '🚀', approved: null },
+  { id: 'log-2', date: '2026-05-28', student: 'Arjun Sharma', hours: 8.50, summary: 'Started REST API for product module, 60% complete.', mood: '😊', approved: true },
+  { id: 'log-3', date: '2026-05-27', student: 'Arjun Sharma', hours: 9.25, summary: 'PR reviews and documentation updates.', mood: '😐', approved: true }
+];
+
+const MOCK_REVIEWS = [
+  { id: 'rev-1', student: 'Arjun Sharma', stage: 'mid_term', tech: 88, comm: 75, overall: 82, text: 'Strong coder, needs documentation polish.' }
+];
+
+// Active portal view router
+function showPage(name) {
+  document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  
+  if (name === 'dashboard') {
+    document.getElementById('page-company-dashboard').classList.add('active');
+    renderDashboard();
+  } else {
+    document.getElementById('page-company-' + name).classList.add('active');
+  }
+  
+  const currentNav = Array.from(document.querySelectorAll('.nav-item')).find(el => el.textContent.toLowerCase().includes(name));
+  if (currentNav) currentNav.classList.add('active');
+  
+  document.getElementById('page-title').textContent = name.charAt(0).toUpperCase() + name.slice(1) + (name === 'listings' ? ' Listings' : name === 'pipeline' ? ' Pipeline' : '');
+  
+  if (name === 'pipeline') renderPipeline();
+  if (name === 'listings') renderListings();
+  if (name === 'tasks') renderTasks();
+  if (name === 'logs') renderLogs();
+  if (name === 'performance') renderReviews();
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function logout() {
+  localStorage.clear();
+  window.location.href = '/login.html';
+}
+
+// Check session
+window.addEventListener('DOMContentLoaded', () => {
+  const userStr = localStorage.getItem('user');
+  const token = localStorage.getItem('access_token');
+  if (!token || !userStr) {
+    window.location.href = '/login.html';
+    return;
+  }
+  const user = JSON.parse(userStr);
+  if (user.role !== 'company' && user.role !== 'admin' && user.role !== 'superadmin') {
+    window.location.href = '/login.html';
+    return;
+  }
+  document.getElementById('hr-name').textContent = user.first_name + ' ' + user.last_name;
+  document.getElementById('avatar-letters').textContent = user.first_name.charAt(0) + user.last_name.charAt(0);
+  
+  // Initial page load
+  renderDashboard();
+});
+
+// Render helper scripts
+function renderDashboard() {
+  // Count states
+  document.getElementById('count-postings').textContent = MOCK_JOBS.length;
+  document.getElementById('count-applicants').textContent = MOCK_APPS.length;
+  document.getElementById('count-hired').textContent = MOCK_APPS.filter(a => a.status === 'hired').length;
+  
+  // Recent Applicants
+  const recentTbody = document.getElementById('dashboard-apps-tbody');
+  recentTbody.innerHTML = MOCK_APPS.map(a => `
+    <tr>
+      <td><strong>${a.student_name}</strong></td>
+      <td>${a.role}</td>
+      <td><span class="pill pill-match">${a.match}%</span></td>
+      <td><button class="btn btn-secondary btn-xs" onclick="showPage('pipeline')">View</button></td>
+    </tr>
+  `).join('');
+
+  // Pending logs
+  const logsTbody = document.getElementById('dashboard-logs-tbody');
+  const pendingLogs = MOCK_LOGS.filter(l => l.approved === null);
+  if (pendingLogs.length === 0) {
+    logsTbody.innerHTML = '<tr><td colspan="4" style="color:var(--text-muted);text-align:center">No pending approvals ✓</td></tr>';
+  } else {
+    logsTbody.innerHTML = pendingLogs.map(l => `
+      <tr>
+        <td><strong>${l.student}</strong></td>
+        <td>${l.date}</td>
+        <td>${l.hours}h</td>
+        <td><button class="btn btn-primary btn-xs" onclick="showPage('logs')">Approve</button></td>
+      </tr>
+    `).join('');
+  }
+}
+
+function renderPipeline() {
+  const stages = {
+    applied: { name: 'Applied', color: 'var(--blue-bright)', cards: [] },
+    shortlisted: { name: 'Shortlisted', color: 'var(--amber)', cards: [] },
+    interview_scheduled: { name: 'Interview', color: 'var(--purple)', cards: [] },
+    offer_sent: { name: 'Offer Sent', color: 'var(--cyan)', cards: [] },
+    hired: { name: 'Hired ✓', color: 'var(--green)', cards: [] }
+  };
+  
+  MOCK_APPS.forEach(a => {
+    if (stages[a.status]) stages[a.status].cards.push(a);
+  });
+  
+  const pipeline = document.getElementById('kanban-pipeline');
+  pipeline.innerHTML = Object.entries(stages).map(([stageKey, stage]) => `
+    <div class="pipeline-col">
+      <div class="col-header">
+        <span class="col-name" style="color:${stage.color}">${stage.name}</span>
+        <span class="col-count">${stage.cards.length}</span>
+      </div>
+      <div class="col-cards" ondragover="event.preventDefault()" ondrop="dropCard(event, '${stageKey}')">
+        ${stage.cards.map(c => `
+          <div class="kcard" draggable="true" ondragstart="dragCard(event, '${c.id}')">
+            <div class="kcard-student">${c.student_name}</div>
+            <div class="kcard-college">${c.college}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="pill pill-match">${c.match}% Match</span>
+              <select style="width:auto;padding:2px 4px;font-size:10px;" onchange="updateCandidateStatus('${c.id}', this.value)">
+                <option value="applied" ${c.status==='applied'?'selected':''}>Applied</option>
+                <option value="shortlisted" ${c.status==='shortlisted'?'selected':''}>Shortlist</option>
+                <option value="interview_scheduled" ${c.status==='interview_scheduled'?'selected':''}>Interview</option>
+                <option value="offer_sent" ${c.status==='offer_sent'?'selected':''}>Offer</option>
+                <option value="hired" ${c.status==='hired'?'selected':''}>Hire</option>
+                <option value="rejected" ${c.status==='rejected'?'selected':''}>Reject</option>
+              </select>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+let draggedCardId = null;
+function dragCard(e, id) { draggedCardId = id; }
+function dropCard(e, stageKey) {
+  if (draggedCardId) {
+    updateCandidateStatus(draggedCardId, stageKey);
+    draggedCardId = null;
+  }
+}
+
+async function updateCandidateStatus(id, newStatus) {
+  const cand = MOCK_APPS.find(c => c.id === id);
+  if (cand) {
+    cand.status = newStatus;
+    
+    // Attempt hitting server API
+    try {
+      await fetch(`/api/v1/applications/${id}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+        },
+        body: JSON.stringify({ status: newStatus, note: 'Stage updated via pipeline drag-drop.' })
+      });
+    } catch {}
+    
+    renderPipeline();
+  }
+}
+
+function renderListings() {
+  const tbody = document.getElementById('listings-tbody');
+  tbody.innerHTML = MOCK_JOBS.map(j => `
+    <tr>
+      <td><strong>${j.title}</strong></td>
+      <td>${j.domain}</td>
+      <td>${j.openings} openings</td>
+      <td>${j.views}</td>
+      <td><span class="pill pill-match">${j.applications_count} apps</span></td>
+      <td><span class="pill ${j.status==='active'?'pill-match':'pill-branch'}">${j.status.toUpperCase()}</span></td>
+      <td>
+        <button class="btn btn-secondary btn-xs" onclick="alert('Demo: Listing is fully active')">Edit</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function publishJob(e) {
+  e.preventDefault();
+  const title = document.getElementById('job_title').value;
+  const domain = document.getElementById('job_domain').value;
+  const location = document.getElementById('job_location').value;
+  const stipend = parseInt(document.getElementById('job_stipend').value) || 0;
+  const duration = parseInt(document.getElementById('job_duration').value) || 12;
+  const skills = document.getElementById('job_skills').value.split(',').map(s=>s.trim());
+  const description = document.getElementById('job_description').value;
+
+  const newListing = {
+    id: 'job-' + (MOCK_JOBS.length + 1),
+    title, domain, stipend_min: stipend, stipend_max: stipend, duration_weeks: duration,
+    openings: 1, views: 0, applications_count: 0, status: 'pending_approval'
+  };
+  MOCK_JOBS.push(newListing);
+
+  // Attempt server post
+  try {
+    await fetch('/api/v1/internships', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+      },
+      body: JSON.stringify({
+        title, description, domain, location, stipend_min: stipend, stipend_max: stipend,
+        duration_weeks: duration, skills_required: skills
+      })
+    });
+  } catch {}
+
+  closeModal('post-modal');
+  renderListings();
+  document.getElementById('post-form').reset();
+}
+
+function renderTasks() {
+  const tbody = document.getElementById('tasks-tbody');
+  tbody.innerHTML = MOCK_TASKS.map(t => `
+    <tr>
+      <td><strong>${t.title}</strong></td>
+      <td><span class="pill ${t.priority==='high'||t.priority==='critical'?'pill-branch':'pill-match'}">${t.priority.toUpperCase()}</span></td>
+      <td>${t.due}</td>
+      <td><span class="pill ${t.status==='completed'?'pill-match':'pill-branch'}">${t.status.replace('_',' ').toUpperCase()}</span></td>
+      <td><strong style="color:var(--green)">${t.score ? t.score+'/100' : '—'}</strong></td>
+      <td>
+        ${t.status==='completed' && !t.score ? `<button class="btn btn-primary btn-xs" onclick="openGradeModal('${t.id}')">Grade</button>` : `<span style="font-size:11px;color:var(--text-muted)">Submitted</span>`}
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openGradeModal(taskId) {
+  document.getElementById('grade_task_id').value = taskId;
+  openModal('grade-modal');
+}
+
+function submitGrade(e) {
+  e.preventDefault();
+  const id = document.getElementById('grade_task_id').value;
+  const score = parseInt(document.getElementById('grade_score').value);
+  const feedback = document.getElementById('grade_feedback').value;
+  
+  const task = MOCK_TASKS.find(t => t.id === id);
+  if (task) {
+    task.score = score;
+    task.feedback = feedback;
+    
+    // Hit API
+    fetch(`/api/v1/tasks/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+      },
+      body: JSON.stringify({ score, feedback, status: 'completed' })
+    }).catch(()=>{});
+  }
+  closeModal('grade-modal');
+  renderTasks();
+}
+
+function assignTask(e) {
+  e.preventDefault();
+  const title = document.getElementById('task_title').value;
+  const app_id = document.getElementById('task_application_id').value;
+  const priority = document.getElementById('task_priority').value;
+  const due_date = document.getElementById('task_due_date').value;
+  const desc = document.getElementById('task_description').value;
+
+  const newTask = {
+    id: 'task-' + (MOCK_TASKS.length + 1),
+    title, priority, due: due_date, status: 'todo', score: null
+  };
+  MOCK_TASKS.push(newTask);
+
+  // POST task
+  fetch('/api/v1/tasks', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    },
+    body: JSON.stringify({ application_id: app_id, title, description: desc, priority, due_date })
+  }).catch(()=>{});
+
+  closeModal('task-modal');
+  renderTasks();
+  document.getElementById('task-form').reset();
+}
+
+function renderLogs() {
+  const tbody = document.getElementById('logs-tbody');
+  tbody.innerHTML = MOCK_LOGS.map(l => `
+    <tr>
+      <td><strong>${l.date}</strong></td>
+      <td>${l.student}</td>
+      <td><span style="color:var(--blue-bright);font-weight:700">${l.hours}h</span></td>
+      <td style="max-width:260px">${l.summary}</td>
+      <td>${l.mood}</td>
+      <td>${l.approved === true ? '<span class="pill pill-match">Approved</span>' : l.approved === false ? '<span class="pill pill-branch">Rejected</span>' : '<span class="pill pill-branch" style="background:#e5a62322;color:#e5a623">Pending</span>'}</td>
+      <td>
+        ${l.approved === null ? `
+          <button class="btn btn-primary btn-xs" onclick="verifyLog('${l.id}', true)">Approve</button>
+          <button class="btn btn-secondary btn-xs text-red" onclick="verifyLog('${l.id}', false)">Reject</button>
+        ` : '—'}
+      </td>
+    </tr>
+  `).join('');
+}
+
+function verifyLog(logId, isApprove) {
+  const log = MOCK_LOGS.find(l => l.id === logId);
+  if (log) {
+    log.approved = isApprove;
+    
+    // hit API
+    fetch(`/api/v1/daily-logs/${logId}/approve`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+      },
+      body: JSON.stringify({ approved: isApprove, note: 'Approved via Supervisor Portal' })
+    }).catch(()=>{});
+    
+    renderLogs();
+  }
+}
+
+function renderReviews() {
+  const tbody = document.getElementById('reviews-tbody');
+  tbody.innerHTML = MOCK_REVIEWS.map(r => `
+    <tr>
+      <td><strong>${r.student}</strong></td>
+      <td><span class="pill pill-match" style="text-transform:capitalize">${r.stage.replace('_',' ')}</span></td>
+      <td>${r.tech}/100</td>
+      <td>${r.comm}/100</td>
+      <td><strong style="color:var(--green)">${r.overall}/100</strong></td>
+      <td style="max-width:240px;color:var(--text-second);font-size:12px">${r.text}</td>
+    </tr>
+  `).join('');
+}
+
+function submitReview(e) {
+  e.preventDefault();
+  const app_id = document.getElementById('rev_app_id').value;
+  const stage = document.getElementById('rev_type').value;
+  const tech = parseInt(document.getElementById('rev_tech').value);
+  const comm = parseInt(document.getElementById('rev_comm').value);
+  const overall = parseInt(document.getElementById('rev_overall').value);
+  const strengths = document.getElementById('rev_strengths').value;
+  const improvements = document.getElementById('rev_improvements').value;
+
+  const newRev = {
+    id: 'rev-' + (MOCK_REVIEWS.length + 1),
+    student: 'Arjun Sharma',
+    stage, tech, comm, overall, text: strengths
+  };
+  MOCK_REVIEWS.push(newRev);
+
+  // hit API
+  fetch('/api/v1/performance', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    },
+    body: JSON.stringify({
+      application_id: app_id, review_type: stage, technical_score: tech, communication: comm,
+      overall_score: overall, strengths, improvements
+    })
+  }).catch(()=>{});
+
+  closeModal('review-modal');
+  renderReviews();
+  document.getElementById('review-form').reset();
+}
+</script>
+</body>
+</html>

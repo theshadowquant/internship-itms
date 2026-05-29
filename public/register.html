@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register | ShadowQuant Dynamics ITMS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg-void: #f4f6fc;
+      --bg-base: #ffffff;
+      --bg-surface: #edf0f8;
+      --bg-card: #ffffff;
+      --blue-core: #1a6cf6;
+      --blue-bright: #1a6cf6;
+      --blue-glow: #1a6cf620;
+      --border: #dbe0f0;
+      --border-glow: #1a6cf640;
+      --text-primary: #0c1220;
+      --text-second: #5a6684;
+      --text-muted: #8ba0b5;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-void);
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 0;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--blue-glow) 0%, transparent 70%);
+      top: -150px;
+      left: -150px;
+      z-index: 1;
+    }
+
+    .register-container {
+      width: 100%;
+      max-width: 500px;
+      background: rgba(14, 20, 40, 0.7);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(30, 40, 64, 0.8);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      z-index: 10;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      justify-content: center;
+    }
+
+    .logo-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--blue-core), var(--blue-bright));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      color: #fff;
+      box-shadow: 0 4px 16px var(--blue-glow);
+    }
+
+    .logo-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .logo-title span {
+      display: block;
+      font-size: 10px;
+      color: var(--blue-bright);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .welcome-msg {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .welcome-msg h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .welcome-msg p {
+      color: var(--text-second);
+      font-size: 13.5px;
+    }
+
+    .role-selector {
+      display: flex;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 4px;
+      margin-bottom: 24px;
+    }
+
+    .role-option {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text-muted);
+    }
+
+    .role-option.active {
+      background: var(--bg-card);
+      color: var(--blue-bright);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-glow);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-second);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    input,
+    select {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 11px 14px;
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13.5px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--blue-core);
+      box-shadow: 0 0 10px rgba(26, 108, 246, 0.2);
+    }
+
+    select option {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+    }
+
+    .btn {
+      width: 100%;
+      background: var(--blue-core);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 13px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 16px var(--blue-glow);
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background: var(--blue-bright);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(26, 108, 246, 0.4);
+    }
+
+    .error-banner {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+      padding: 12px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      margin-bottom: 20px;
+      display: none;
+      text-align: center;
+    }
+
+    .login-prompt {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13.5px;
+      color: var(--text-second);
+    }
+
+    .login-prompt a {
+      color: var(--blue-bright);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-prompt a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="register-container">
+    <div class="logo-header">
+      <div class="logo-mark">SQ</div>
+      <div class="logo-title">ShadowQuant<span>ITMS Dynamics</span></div>
+    </div>
+
+    <div class="welcome-msg">
+      <h1>Create SaaS Account</h1>
+      <p>Sign up to join our university network</p>
+    </div>
+
+    <div class="error-banner" id="error-banner"></div>
+
+    <div class="role-selector">
+      <div class="role-option active" id="role-student" onclick="setRole('student')">Student Portal</div>
+      <div class="role-option" id="role-company" onclick="setRole('company')">Company Portal</div>
+    </div>
+
+    <form id="register-form" onsubmit="handleRegister(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="first_name">First Name</label>
+          <input type="text" id="first_name" placeholder="John" required />
+        </div>
+        <div class="form-group">
+          <label for="last_name">Last Name</label>
+          <input type="text" id="last_name" placeholder="Doe" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Portal Email Address</label>
+        <input type="email" id="email" placeholder="name@college.edu or name@company.com" required />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Create Secure Password (Min 8 chars)</label>
+        <input type="password" id="password" placeholder="••••••••" required minlength="8" />
+      </div>
+
+      <!-- Company Name (Conditional) -->
+      <div class="form-group" id="company-name-group" style="display:none">
+        <label for="company_name">Company Name</label>
+        <input type="text" id="company_name" placeholder="e.g. Google India" />
+      </div>
+
+      <!-- Tenant Selection -->
+      <div class="form-group" id="tenant-group">
+        <label for="tenant_id">Select University Tenant</label>
+        <select id="tenant_id">
+          <option value="00000000-0000-0000-0000-000000000002">Bapuji Institute of Engineering and Technology (BIET)
+          </option>
+          <option value="00000000-0000-0000-0000-000000000003">RV College of Engineering (RVCE)</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn" id="submit-btn">Register Account</button>
+    </form>
+
+    <p class="login-prompt">
+      Already registered? <a href="/login.html">Sign In here</a>
+    </p>
+  </div>
+
+  <script>
+    let activeRole = 'student';
+
+    function setRole(role) {
+      activeRole = role;
+      document.getElementById('role-student').classList.toggle('active', role === 'student');
+      document.getElementById('role-company').classList.toggle('active', role === 'company');
+
+      // Toggle conditional inputs
+      document.getElementById('company-name-group').style.display = role === 'company' ? 'block' : 'none';
+      document.getElementById('company_name').required = role === 'company';
+
+      // University tenant is only for students during onboarding, companies register globally
+      document.getElementById('tenant-group').style.display = role === 'student' ? 'block' : 'none';
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const first_name = document.getElementById('first_name').value.trim();
+      const last_name = document.getElementById('last_name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const company_name = document.getElementById('company_name').value.trim();
+      const tenant_id = document.getElementById('tenant_id').value;
+
+      const errorBanner = document.getElementById('error-banner');
+      const btn = document.getElementById('submit-btn');
+
+      errorBanner.style.display = 'none';
+      btn.disabled = true;
+      btn.textContent = 'Processing registration...';
+
+      try {
+        const payload = {
+          first_name,
+          last_name,
+          email,
+          password,
+          role: activeRole
+        };
+        if (activeRole === 'company') {
+          payload.company_name = company_name;
+        } else {
+          payload.tenant_id = tenant_id;
+        }
+
+        const res = await fetch('/api/v1/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+        if (!result.success) {
+          throw new Error(result.message || result.errors?.[0]?.msg || 'Registration failed.');
+        }
+
+        // Success: Auto login
+        localStorage.setItem('access_token', result.data.access_token);
+        localStorage.setItem('refresh_token', result.data.refresh_token);
+        localStorage.setItem('user', JSON.stringify({
+          id: result.data.id,
+          role: result.data.role,
+          first_name,
+          last_name
+        }));
+
+        if (activeRole === 'student') {
+          window.location.href = '/index.html';
+        } else {
+          window.location.href = '/company.html';
+        }
+      } catch (err) {
+        errorBanner.textContent = err.message;
+        errorBanner.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Register Account';
+      }
+    }
+  </script>
+</body>
+
+</html>
