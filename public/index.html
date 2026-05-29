@@ -1193,7 +1193,7 @@ select option{background:var(--bg-card)}
     <div class="form-group"><label>Resume URL / Link</label><input type="url" placeholder="https://drive.google.com/…"/></div>
     <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
       <button class="btn btn-secondary" onclick="closeModal('apply-modal')">Cancel</button>
-      <button class="btn btn-primary" onclick="closeModal('apply-modal');showToast('Application submitted! 🎉')">Submit Application</button>
+      <button class="btn btn-primary" id="apply-submit-btn" onclick="submitApplication()">Submit Application</button>
     </div>
   </div>
 </div>
@@ -1281,7 +1281,7 @@ select option{background:var(--bg-card)}
 /* ══════════════════════════════════════════
    DATA
 ══════════════════════════════════════════ */
-const JOBS = [
+let JOBS = [
   { id:1, company:'Google', logo:'G', title:'Software Engineering Intern', domain:'Backend Engineering', location:'Bangalore', remote:false, duration:12, stipend:80000, skills:['Python','Go','Kubernetes'], status:'active', featured:true, deadline:'Dec 15, 2025', match:94 },
   { id:2, company:'Microsoft', logo:'MS', title:'SDET Intern', domain:'Quality Engineering', location:'Hyderabad', remote:true, duration:8, stipend:60000, skills:['Java','Selenium','Azure DevOps'], status:'active', featured:false, deadline:'Dec 10, 2025', match:87 },
   { id:3, company:'Flipkart', logo:'FK', title:'Data Engineering Intern', domain:'Data Engineering', location:'Bangalore', remote:false, duration:6, stipend:40000, skills:['Python','Spark','Kafka'], status:'active', featured:false, deadline:'Dec 20, 2025', match:81 },
@@ -1289,7 +1289,7 @@ const JOBS = [
   { id:5, company:'Zerodha', logo:'ZE', title:'Product Engineering Intern', domain:'Fintech', location:'Bangalore', remote:false, duration:4, stipend:35000, skills:['React','TypeScript','Redis'], status:'active', featured:false, deadline:'Jan 12, 2026', match:78 },
 ];
 
-const APPS = [
+let APPS = [
   { company:'TechNova Solutions', logo:'TN', role:'Backend Engineering Intern', date:'Nov 1, 2025', status:'hired', match:92, next:'Ongoing Internship' },
   { company:'Google', logo:'G', role:'SWE Intern', date:'Nov 15, 2025', status:'shortlisted', match:94, next:'Interview Dec 12' },
   { company:'Microsoft', logo:'MS', role:'SDET Intern', date:'Nov 18, 2025', status:'interview_scheduled', match:87, next:'Interview Dec 10' },
@@ -1354,7 +1354,7 @@ function showPage(name) {
 function renderJobs() {
   const list = document.getElementById('job-list');
   list.innerHTML = JOBS.map(j => `
-    <div class="job-card ${j.featured?'featured':''}" onclick="showModal('apply-modal')">
+    <div class="job-card ${j.featured?'featured':''}" onclick="openApplyModal('${j.id}', '${j.company.replace(/'/g, "\\'")}', '${j.title.replace(/'/g, "\\'")}')">
       <div class="job-header">
         <div class="company-logo">${j.logo}</div>
         <div class="job-info">
@@ -1589,9 +1589,146 @@ function showToast(msg) {
 }
 
 /* ══════════════════════════════════════════
+   API & CLOUD SYNC LOGIC
+══════════════════════════════════════════ */
+const token = localStorage.getItem('access_token');
+if (!token) {
+  window.location.href = '/login.html';
+}
+
+let activeJobId = null;
+
+function openApplyModal(id, company, title) {
+  activeJobId = id;
+  // Update modal header text
+  document.querySelector('#apply-modal .modal-title').textContent = 'Apply for ' + title;
+  document.querySelector('#apply-modal .modal-header p').textContent = company;
+  // Clear modal inputs
+  document.querySelector('#apply-modal textarea').value = '';
+  document.querySelector('#apply-modal input[type="url"]').value = '';
+  showModal('apply-modal');
+}
+
+async function submitApplication() {
+  const submitBtn = document.getElementById('apply-submit-btn');
+  if (!activeJobId) return;
+
+  const coverLetter = document.querySelector('#apply-modal textarea').value.trim();
+  const resumeUrl = document.querySelector('#apply-modal input[type="url"]').value.trim();
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+  }
+
+  try {
+    const res = await fetch('/api/v1/applications', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        internship_id: activeJobId,
+        cover_letter: coverLetter,
+        resume_url: resumeUrl
+      })
+    });
+
+    const result = await res.json();
+    if (result.success) {
+      closeModal('apply-modal');
+      showToast('Application submitted! 🎉');
+      await fetchCloudData();
+    } else {
+      alert(result.message || 'Failed to submit application.');
+    }
+  } catch (err) {
+    console.error('Error submitting application:', err);
+    alert('An error occurred during submission.');
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Application';
+    }
+  }
+}
+
+async function fetchCloudData() {
+  try {
+    // 1. Fetch Student Applications
+    const appsRes = await fetch('/api/v1/applications?limit=100', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const appsData = await appsRes.json();
+    if (appsData.success && appsData.data.length > 0) {
+      APPS = appsData.data.map(a => ({
+        id: a.id,
+        logo: a.company_name ? a.company_name.substring(0,2).toUpperCase() : 'IN',
+        company: a.company_name,
+        role: a.internship_title,
+        date: new Date(a.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        status: a.status,
+        match: a.match_score || 80,
+        next: a.status === 'hired' ? 'Ongoing Internship' :
+              a.status === 'shortlisted' ? 'Interview Scheduled' :
+              a.status === 'interview_scheduled' ? 'Interview Scheduled' :
+              a.status === 'applied' ? 'Awaiting Review' : '—'
+      }));
+    }
+
+    // 2. Fetch Active Jobs
+    const jobsRes = await fetch('/api/v1/internships?status=active&limit=100', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const jobsData = await jobsRes.json();
+    if (jobsData.success && jobsData.data.length > 0) {
+      JOBS = jobsData.data.map(j => ({
+        id: j.id,
+        company: j.company_name,
+        logo: j.company_name ? j.company_name.substring(0,2).toUpperCase() : 'TN',
+        title: j.title,
+        domain: j.domain || 'Tech',
+        location: j.location || 'Remote',
+        remote: j.is_remote === 1,
+        duration: j.duration_weeks,
+        stipend: j.stipend_max || j.stipend_min || 20000,
+        skills: JSON.parse(j.skills_required || '[]'),
+        status: j.status,
+        featured: j.is_featured === 1,
+        deadline: new Date(j.application_deadline || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        match: j.company_rating ? Math.round(j.company_rating * 20) : 85
+      }));
+    }
+
+    // 3. Update Dashboard Stats
+    const totalApps = APPS.length;
+    const shortlistedApps = APPS.filter(a => ['shortlisted', 'interview_scheduled', 'offer_sent'].includes(a.status)).length;
+    
+    const statCards = document.querySelectorAll('.stat-value');
+    if (statCards.length >= 2) {
+      statCards[0].textContent = totalApps;
+      statCards[1].textContent = shortlistedApps;
+    }
+
+    const navBadge = document.querySelector('.nav-badge');
+    if (navBadge) {
+      navBadge.textContent = totalApps;
+    }
+
+    renderJobs();
+    renderApps();
+    renderKanban();
+  } catch (err) {
+    console.error('Error fetching cloud data:', err);
+  }
+}
+
+/* ══════════════════════════════════════════
    INIT
 ══════════════════════════════════════════ */
 renderActivityChart();
+fetchCloudData();
 
 // Nav click handlers
 document.querySelectorAll('.nav-item').forEach(item => {
