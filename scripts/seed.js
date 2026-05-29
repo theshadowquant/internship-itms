@@ -8,8 +8,8 @@ const db = require('../config/db');
 
 async function seed() {
   console.log('🌱 Starting database seeding...');
-  // Let MySQL connection establish first
-  await new Promise(resolve => setTimeout(resolve, 500));
+  // Let MySQL connection establish first (increased for remote cloud latency)
+  await new Promise(resolve => setTimeout(resolve, 2500));
 
   try {
     // 0. Clear old data (disabled in production, safe for dev setup)

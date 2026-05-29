@@ -3,8 +3,8 @@
 -- Engine: MySQL 8.0+  |  Charset: utf8mb4
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS sqd_itms CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE sqd_itms;
+-- CREATE DATABASE IF NOT EXISTS sqd_itms CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- USE sqd_itms;
 
 -- ─────────────────────────────────────────────
 -- 1. TENANTS (multi-tenant: colleges / orgs)
