@@ -7,6 +7,7 @@ import { getNotifications, markAllNotificationsRead } from '../../api/users';
 import Avatar from '../ui/Avatar';
 import Badge from '../ui/Badge';
 import Button from '../ui/Button';
+import { cn } from '../../utils/cn';
 
 const Topbar = () => {
   const { user, logout } = useAuth();
@@ -191,7 +192,11 @@ const Topbar = () => {
                         key={notif.id}
                         onClick={() => {
                           setIsNotifOpen(false);
-                          if (notif.actionUrl) navigate(notif.actionUrl);
+                          if (notif.actionUrl) {
+                            // Only navigate for internal relative paths
+                            const url = notif.actionUrl.startsWith('/') ? notif.actionUrl : `/${notif.actionUrl}`;
+                            navigate(url);
+                          }
                         }}
                         className={cn(
                           "px-4 py-3 cursor-pointer hover:bg-slate-800/40 transition-colors text-left",
