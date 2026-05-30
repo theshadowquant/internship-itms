@@ -1,0 +1,140 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                String          @id @default(uuid())
+  email             String          @unique
+  passwordHash      String
+  firstName         String
+  lastName          String
+  role              String          @default("STUDENT") // "STUDENT" | "ADMIN"
+  avatarUrl         String?
+  phone             String?
+  bio               String?
+  isActive          Boolean         @default(true)
+  isVerified        Boolean         @default(false)
+  refreshToken      String?         // Persisted refresh token for rotating sessions
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  studentProfile    StudentProfile?
+  applications      Application[]
+  dailyLogs         DailyLog[]
+  notifications     Notification[]
+  postedInternships Internship[]
+}
+
+model StudentProfile {
+  id              String   @id @default(uuid())
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String   @unique
+  collegeName     String?
+  degree          String?
+  branch          String?
+  graduationYear  Int?
+  gpa             Float?
+  skills          String   @default("[]") // SQLite stringified JSON array for tags/skills
+  portfolioUrl    String?
+  linkedinUrl     String?
+  githubUrl       String?
+  resumeUrl       String?
+  availability    String   @default("IMMEDIATE") // "IMMEDIATE" | "ONE_MONTH" | "THREE_MONTHS" | "NOT_AVAILABLE"
+  expectedStipend Int?
+  profileScore    Int      @default(0)
+}
+
+model Internship {
+  id                  String        @id @default(uuid())
+  title               String
+  companyName         String
+  companyLogo         String?
+  description         String
+  responsibilities    String?
+  requirements        String?
+  skillsRequired      String        @default("[]") // SQLite stringified JSON array for skills requirements
+  domain              String
+  location            String
+  isRemote            Boolean       @default(false)
+  durationWeeks       Int
+  stipendMin          Int?
+  stipendMax          Int?
+  openings            Int           @default(1)
+  minGpa              Float?
+  applicationDeadline DateTime
+  startDate           DateTime
+  status              String        @default("ACTIVE") // "ACTIVE" | "PAUSED" | "CLOSED"
+  isFeatured          Boolean       @default(false)
+  viewsCount          Int           @default(0)
+  applicationsCount   Int           @default(0)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  postedBy            User          @relation(fields: [postedById], references: [id])
+  postedById          String
+  applications        Application[]
+}
+
+model Application {
+  id              String    @id @default(uuid())
+  internship      Internship @relation(fields: [internshipId], references: [id], onDelete: Cascade)
+  internshipId    String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String
+  coverLetter     String?
+  resumeUrl       String?
+  status          String    @default("APPLIED") // "APPLIED" | "SHORTLISTED" | "INTERVIEW" | "OFFER_SENT" | "HIRED" | "REJECTED" | "WITHDRAWN"
+  stageHistory    String    @default("[]") // Stringified JSON [{ stage: string, timestamp: string, note?: string }]
+  interviewDate   DateTime?
+  offerLetterUrl  String?
+  matchScore      Int       @default(0) // Computed on apply based on skills overlap
+  rejectionReason String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  dailyLogs       DailyLog[]
+}
+
+model DailyLog {
+  id             String       @id @default(uuid())
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  application    Application? @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+  applicationId  String?
+  logDate        DateTime
+  checkIn        String       // "HH:MM" format
+  checkOut       String       // "HH:MM" format
+  hoursWorked    Float        // Auto-computed using date-fns
+  workSummary    String
+  mood           String       @default("GOOD") // "GREAT" | "GOOD" | "OKAY" | "DIFFICULT"
+  status         String       @default("PENDING") // "PENDING" | "APPROVED" | "REJECTED"
+  supervisorNote String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Notification {
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  type       String
+  title      String
+  body       String
+  isRead     Boolean  @default(false)
+  actionUrl  String?
+  createdAt  DateTime @default(now())
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  actorId    String?
+  action     String
+  entityType String?
+  entityId   String?
+  oldValue   String?  // Stringified JSON
+  newValue   String?  // Stringified JSON
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+}
